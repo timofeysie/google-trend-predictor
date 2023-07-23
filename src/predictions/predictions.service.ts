@@ -17,7 +17,6 @@ export class PredictionsService {
           console.log('err', err);
           reject(err);
         } else {
-          console.log('results', results);
           resolve(results);
         }
       });

@@ -2,4 +2,5 @@
 export default {
   geo: 'US',
   category: 'all',
+  hl: "en-AU"
 };

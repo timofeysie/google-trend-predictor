@@ -21,7 +21,15 @@ npm run test:cov
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+http://localhost:3000/process-data
+
 ## Real Time Trends
+
+We get the results of two data sources and merge then together for the model training data.
+
+These two sources are the arguments to the ```processData(realTimeTrendsData: any, realTimeTrendsPageData: any)``` function.
+
+### realTimeTrendsData
 
 Using the [google trends api](https://www.npmjs.com/package/google-trends-api#realTimeTrends) to get current real-time trending data.
 
@@ -153,6 +161,8 @@ Example results:
    "hideAllImages":false
 }
 ```
+
+### realTimeTrendsPageData
 
 ### ML Approach
 

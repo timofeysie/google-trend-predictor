@@ -27,6 +27,8 @@
     "@tensorflow/tfjs": "^4.9.0",
     "@tensorflow/tfjs-converter": "^4.9.0",
     "@tensorflow/tfjs-node": "^4.9.0",
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
     "google-trends-api": "^4.9.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
