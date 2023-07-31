@@ -18,13 +18,10 @@ export class AppController {
   @Get('/process-data')
   async processData(): Promise<any> {
     // Replace 'data' with the actual JSON data you receive from the real-time trends API
+    const searchTrends =
+      await this.googleTrendsService.getSearchTrendsViePuppeteer();
     const realTimeTrendsData = await this.predictionsService.findAll();
-    const realTimeTrendsPageData =
-      await this.googleTrendsService.fetchRealTimeTrendsPage();
-    this.googleTrendsService.processData(
-      realTimeTrendsData,
-      realTimeTrendsPageData,
-    );
+    this.googleTrendsService.processData(realTimeTrendsData, searchTrends);
     return 'Data processing started.';
   }
 }

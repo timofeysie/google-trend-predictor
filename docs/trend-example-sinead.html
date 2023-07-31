@@ -1,0 +1,1848 @@
+<md-content
+  scroll-detector=""
+  on-scroll="ctrl.handleScroll"
+  class="feed-item-dialog-content border-separator _md"
+>
+  <!----><ng-include
+    src="'/components/feed/feed-item-dialog/feed-item-dialog-top.html'"
+    class=""
+    style=""
+    ><div class="feed-item-dialog-top">
+      <div class="index">2</div>
+      <div
+        class="details with-serp-link"
+        ng-class="{'with-serp-link': ctrl.withSerpLink }"
+      >
+        <div class="title">
+          <!----><span ng-repeat="titlePart in ctrl.titleArray">
+            <a
+              ng-href="/trends/explore?q=/m/012cnn&amp;date=now+7-d&amp;geo=US"
+              ng-attr-title="{{::titlePart.hoverMessage}}"
+              track="['Trending Searches ' + ctrl.currentFeedItemType, 'click', 'feed item dialog title: ' + titlePart.text]"
+              href="/trends/explore?q=/m/012cnn&amp;date=now+7-d&amp;geo=US"
+              title="Explore Sinéad O'Connor"
+            >
+              Sinéad O'Connor
+            </a>
+            <!----><span ng-if="!$last">•</span
+            ><!----> </span
+          ><!----><span ng-repeat="titlePart in ctrl.titleArray">
+            <a
+              ng-href="/trends/explore?q=/m/0bb7t8n&amp;date=now+7-d&amp;geo=US"
+              ng-attr-title="{{::titlePart.hoverMessage}}"
+              track="['Trending Searches ' + ctrl.currentFeedItemType, 'click', 'feed item dialog title: ' + titlePart.text]"
+              href="/trends/explore?q=/m/0bb7t8n&amp;date=now+7-d&amp;geo=US"
+              title="Explore Nothing Compares 2 U"
+            >
+              Nothing Compares 2 U
+            </a>
+            <!----><span ng-if="!$last">•</span
+            ><!----> </span
+          ><!----><span ng-repeat="titlePart in ctrl.titleArray">
+            <a
+              ng-href="/trends/explore?q=/g/11bzq353ky&amp;date=now+7-d&amp;geo=US"
+              ng-attr-title="{{::titlePart.hoverMessage}}"
+              track="['Trending Searches ' + ctrl.currentFeedItemType, 'click', 'feed item dialog title: ' + titlePart.text]"
+              href="/trends/explore?q=/g/11bzq353ky&amp;date=now+7-d&amp;geo=US"
+              title="Explore Kathryn Ferguson"
+            >
+              Kathryn Ferguson
+            </a>
+            <!----> </span
+          ><!---->
+        </div>
+        <div class="details-bottom">
+          <!---->
+          <!----><span
+            class="details-bottom-text"
+            ng-if="ctrl.currentFeedItemType === ctrl.FeedItemType.REALTIME"
+          >
+            20 July 2023 - Now </span
+          ><!---->
+        </div>
+        <!---->
+        <div class="details-actions" ng-if="ctrl.withSerpLink">
+          <!---->
+
+          <!----><md-menu
+            class="search-it-menu md-menu _md"
+            ng-if="ctrl.currentFeedItemType === ctrl.FeedItemType.REALTIME"
+            md-position-mode="target bottom"
+            md-offset="100 -5"
+          >
+            <button
+              class="action-button button-with-menu"
+              ng-click="ctrl.openSearchItMenu($mdOpenMenu, $event)"
+              track="['Trending Searches ' + ctrl.currentFeedItemType, 'click', 'search-it-menu']"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-owns="menu_container_285"
+            >
+              <img
+                src="https://www.gstatic.com/images/branding/googleg/svg/googleg_standard_clr_16px.svg"
+                role="presentation"
+              />
+              Search it
+              <i class="material-icons-extended size-24 gray"
+                >arrow_drop_down</i
+              >
+            </button>
+
+            <div
+              class="_md _md-open-menu-container md-whiteframe-z2"
+              id="menu_container_285"
+              style="display: none"
+              aria-hidden="true"
+            >
+              <md-menu-content class="search-it-menu-content" role="menu">
+                <!----><span ng-repeat="titlePart in ctrl.titleArray">
+                  <md-menu-item class="search-it-menu-item">
+                    <a
+                      ng-click="ctrl.openSearchPage($event)"
+                      data-search-query="Sinéad O'Connor"
+                      role="menuitem"
+                    >
+                      Sinéad O'Connor
+                    </a>
+                  </md-menu-item> </span
+                ><!----><span ng-repeat="titlePart in ctrl.titleArray">
+                  <md-menu-item class="search-it-menu-item">
+                    <a
+                      ng-click="ctrl.openSearchPage($event)"
+                      data-search-query="Nothing Compares 2 U"
+                      role="menuitem"
+                    >
+                      Nothing Compares 2 U
+                    </a>
+                  </md-menu-item> </span
+                ><!----><span ng-repeat="titlePart in ctrl.titleArray">
+                  <md-menu-item class="search-it-menu-item">
+                    <a
+                      ng-click="ctrl.openSearchPage($event)"
+                      data-search-query="Kathryn Ferguson"
+                      role="menuitem"
+                    >
+                      Kathryn Ferguson
+                    </a>
+                  </md-menu-item> </span
+                ><!---->
+              </md-menu-content>
+            </div></md-menu
+          ><!---->
+
+          <button
+            type="button"
+            class="action-button"
+            ng-click="ctrl.openShareBottomSheet($event)"
+            track="['Trending Searches ' + ctrl.currentFeedItemType, 'click', 'share']"
+          >
+            <i class="material-icons-extended size-20 gray">share</i>
+            Share
+          </button>
+        </div>
+        <!---->
+      </div>
+      <!---->
+    </div>
+  </ng-include>
+  <!---->
+  <!----><!----><ng-include
+    ng-if="ctrl.currentFeedItemType === ctrl.FeedItemType.REALTIME"
+    src="'/components/feed/feed-item-dialog/feed-item-dialog-realtime-body.html'"
+    class=""
+    ><!----><trends-widget
+      story-id="storyId"
+      data="ctrl.timelineWidget"
+      ng-if="ctrl.timelineWidget"
+      template="fe_trendingfeed"
+      ><!----><ng-include src="widgetTemplate"
+        ><widget
+          type="fe_int_over_time"
+          version="1"
+          template="fe_trendingfeed"
+          on-event="onEvent({'event': event})"
+          embed="embed"
+          share="share"
+          fields="[
+        {'name': 'topic', 'value': title},
+        {'name': 'barAnnotationText', 'value': barAnnotationText},
+        {'name': 'lineAnnotationText', 'value': lineAnnotationText},
+        {'name': 'sumAnnotationText', 'value': sumAnnotationText},
+        {'name': 'barData', 'value': barData}
+    ]"
+          apis="[
+        {
+          'name': 'fe_intovertime',
+          'url': config.pathPrefix + '/api/widgetdata/timeline',
+          'params': {'req': request, 'tz': config.userTimezoneOffset, 'token': token}
+        }
+    ]"
+          story-id="storyId"
+          story-title="storyTitle"
+          story-title-array="storyTitleArray"
+          story-country="storyCountry"
+          story-time-range="storyTimeRange"
+          story-number-of-items="storyNumberOfItems"
+          palette="widgetPalette"
+          forced-color=""
+          ><!---->
+
+          <!---->
+
+          <!----><!---->
+          <div
+            class="widget-template"
+            ng-include="widget.templateUrl"
+            ng-if="(isPrefetched || isScrolledInto) &amp;&amp; !(widget.displayLoader ||
+        widget.errorMessage) &amp;&amp; template"
+            style=""
+          >
+            <div
+              class="fe-int-over-time-generated fe-atoms-generic-container trendingfeed-desktop"
+              ng-init="fields = ctrl.widget.fields"
+            >
+              <div
+                class="fe-atoms-generic-header-container fe-atoms-generic-separator"
+                dir="auto"
+              >
+                <div class="fe-atoms-generic-title">Interest over time</div>
+                <div class="fe-int-over-time-legend-container">
+                  <div
+                    class="circle"
+                    ng-style="{
+             'background-color': forcedColor || ctrl.colors.getHexValue(fields.color.value)
+           }"
+                    style="background-color: rgb(76, 141, 246)"
+                  ></div>
+                  <div class="text">Search interest</div>
+                  <!---->
+                  <div
+                    class="circle legend-gray"
+                    ng-if="ctrl.hasArticlesData"
+                  ></div>
+                  <!---->
+                  <!---->
+                  <div class="text" ng-if="ctrl.hasArticlesData">
+                    News articles
+                  </div>
+                  <!---->
+                </div>
+              </div>
+              <!----><ng-include
+                src="'/widgets_library/fe_int_over_time_v1/views/content.html'"
+                ><div
+                  class="fe-atoms-generic-content-container fe-init-over-time-content-container"
+                >
+                  <div class="legend fe-atoms-generic-hide-in-desktop">
+                    <div class="fe-int-over-time-legend-item-wrapper">
+                      <div
+                        class="circle"
+                        ng-style="{'background-color': forcedColor || ctrl.colors.getHexValue(fields.color.value)}"
+                        style="background-color: rgb(76, 141, 246)"
+                      ></div>
+                      <div class="text">Search interest</div>
+                    </div>
+                    <!---->
+                    <div
+                      class="fe-int-over-time-legend-item-wrapper"
+                      ng-if="ctrl.hasArticlesData"
+                    >
+                      <div class="circle legend-gray"></div>
+                      <div class="text">News articles</div>
+                    </div>
+                    <!---->
+                  </div>
+                  <fe-combo-chart-directive
+                    class="fe-combo-chart-directive" 
+                    options="ctrl.options"
+                    columns="ctrl.chartColumns"
+                    data="ctrl.chartRows"
+                    ><div class="combo-container">
+                      <div style="position: relative">
+                        <div
+                          dir="ltr"
+                          style="
+                            position: relative;
+                            width: 572px;
+                            height: 288px;
+                          "
+                        >
+                          <div
+                            style="
+                              position: absolute;
+                              left: 0px;
+                              top: 0px;
+                              width: 100%;
+                              height: 100%;
+                            "
+                            aria-label="A chart."
+                          >
+                            <svg
+                              width="572"
+                              height="288"
+                              aria-label="A chart."
+                              style="overflow: hidden"
+                            >
+                              <defs id="defs">
+                                <clipPath id="_ABSTRACT_RENDERER_ID_2">
+                                  <rect
+                                    x="29"
+                                    y="32"
+                                    width="515"
+                                    height="232"
+                                  ></rect>
+                                </clipPath>
+                              </defs>
+                              <g>
+                                <rect
+                                  x="29"
+                                  y="32"
+                                  width="515"
+                                  height="232"
+                                  stroke="none"
+                                  stroke-width="0"
+                                  fill-opacity="0"
+                                  fill="#ffffff"
+                                ></rect>
+                                <g
+                                  clip-path="url(https://trends.google.com/trends/trendingsearches/realtime?geo=US&amp;category=all&amp;hl=en-AU#_ABSTRACT_RENDERER_ID_2)"
+                                >
+                                  <g>
+                                    <rect
+                                      x="29"
+                                      y="205"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#cccccc"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="148"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#cccccc"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="90"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#cccccc"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="32"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#cccccc"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="205"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#e0e0e0"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="148"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#e0e0e0"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="90"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#e0e0e0"
+                                    ></rect>
+                                    <rect
+                                      x="29"
+                                      y="32"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#e0e0e0"
+                                    ></rect>
+                                  </g>
+                                  <g>
+                                    <g>
+                                      <rect
+                                        x="29"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M29,263.523102310231L42,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="42"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M42,263.523102310231L55,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="55"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M55,263.523102310231L69,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="69"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M69,263.523102310231L82,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="82"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M82,263.523102310231L95,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="95"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M95,263.523102310231L108,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="108"
+                                        y="261.21287128712873"
+                                        width="13"
+                                        height="2.31023102310229"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M108,261.21287128712873L121,261.21287128712873"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="121"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M121,263.523102310231L134,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="134"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M134,263.523102310231L148,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="148"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M148,263.523102310231L161,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="161"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M161,263.523102310231L174,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="174"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M174,263.523102310231L187,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="187"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M187,263.523102310231L200,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="200"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M200,263.523102310231L214,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="214"
+                                        y="258.9026402640264"
+                                        width="13"
+                                        height="4.620462046204636"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M214,258.9026402640264L227,258.9026402640264"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="227"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M227,263.523102310231L240,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="240"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M240,263.523102310231L253,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="253"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M253,263.523102310231L266,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="266"
+                                        y="261.21287128712873"
+                                        width="13"
+                                        height="2.31023102310229"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M266,261.21287128712873L279,261.21287128712873"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="279"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M279,263.523102310231L293,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="293"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M293,263.523102310231L306,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="306"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M306,263.523102310231L319,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="319"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M319,263.523102310231L332,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="332"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M332,263.523102310231L345,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="345"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M345,263.523102310231L358,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="358"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M358,263.523102310231L372,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="372"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M372,263.523102310231L385,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="385"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M385,263.523102310231L398,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="398"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M398,263.523102310231L411,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="411"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M411,263.523102310231L424,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="424"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M424,263.523102310231L438,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="438"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M438,263.523102310231L451,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="451"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M451,263.523102310231L464,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="464"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M464,263.523102310231L477,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="477"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M477,263.523102310231L490,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="490"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M490,263.523102310231L503,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="503"
+                                        y="263.523102310231"
+                                        width="14"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M503,263.523102310231L517,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="517"
+                                        y="87.94554455445547"
+                                        width="13"
+                                        height="175.57755775577556"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M517,87.94554455445547L530,87.94554455445547"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                    <g>
+                                      <rect
+                                        x="530"
+                                        y="263.523102310231"
+                                        width="13"
+                                        height="0"
+                                        stroke="none"
+                                        stroke-width="0"
+                                        fill="#eeeeee"
+                                      ></rect>
+                                      <path
+                                        d="M530,263.523102310231L543,263.523102310231"
+                                        stroke="#eeeeee"
+                                        stroke-width="4"
+                                        fill-opacity="1"
+                                        fill="none"
+                                      ></path>
+                                    </g>
+                                  </g>
+                                  <g>
+                                    <rect
+                                      x="29"
+                                      y="263"
+                                      width="515"
+                                      height="1"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#9e9e9e"
+                                    ></rect>
+                                  </g>
+                                  <g>
+                                    <path
+                                      d="M36.08974358974359,263.523102310231L49.26923076923077,263.523102310231L62.44871794871795,263.523102310231L75.62820512820512,263.523102310231L88.8076923076923,263.523102310231L101.98717948717949,263.523102310231L115.16666666666666,263.523102310231L128.34615384615384,263.523102310231L141.52564102564102,263.523102310231L154.7051282051282,263.523102310231L167.8846153846154,263.523102310231L181.06410256410257,263.523102310231L194.24358974358972,263.523102310231L207.4230769230769,263.523102310231L220.6025641025641,263.523102310231L233.78205128205127,263.523102310231L246.96153846153845,263.523102310231L260.14102564102564,263.523102310231L273.3205128205128,263.523102310231L286.5,263.523102310231L299.6794871794872,263.523102310231L312.85897435897436,263.523102310231L326.03846153846155,263.523102310231L339.21794871794873,263.523102310231L352.39743589743586,263.523102310231L365.57692307692304,263.523102310231L378.7564102564102,263.523102310231L391.9358974358974,263.523102310231L405.1153846153846,263.523102310231L418.29487179487177,263.523102310231L431.47435897435895,263.523102310231L444.65384615384613,263.523102310231L457.8333333333333,263.523102310231L471.0128205128205,263.523102310231L484.1923076923077,263.523102310231L497.37179487179486,263.523102310231L510.55128205128204,263.523102310231L523.7307692307693,113.35808580858088L536.9102564102564,32.5"
+                                      stroke="#4285f4"
+                                      stroke-width="4"
+                                      fill-opacity="1"
+                                      fill="none"
+                                    ></path>
+                                  </g>
+                                </g>
+                                <g></g>
+                                <g>
+                                  <g>
+                                    <text
+                                      text-anchor="middle"
+                                      x="36.08974358974359"
+                                      y="280.2"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#9e9e9e"
+                                    >
+                                      ‪20 July at 9:…
+                                    </text>
+                                    <rect
+                                      x="0.0897435897435912"
+                                      y="270"
+                                      width="72"
+                                      height="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill-opacity="0"
+                                      fill="#ffffff"
+                                    ></rect>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="middle"
+                                      x="391.9358974358974"
+                                      y="280.2"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#9e9e9e"
+                                    >
+                                      ‪25 July at 9:00 am‬
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="end"
+                                      x="24.5"
+                                      y="209.96732673267326"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#4c8df6"
+                                    >
+                                      25
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="end"
+                                      x="24.5"
+                                      y="152.2115511551155"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#4c8df6"
+                                    >
+                                      50
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="end"
+                                      x="24.5"
+                                      y="94.45577557755776"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#4c8df6"
+                                    >
+                                      75
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="end"
+                                      x="24.5"
+                                      y="36.7"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#4c8df6"
+                                    >
+                                      100
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="start"
+                                      x="548"
+                                      y="209.96732673267326"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#444444"
+                                    >
+                                      25
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="start"
+                                      x="548"
+                                      y="152.2115511551155"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#444444"
+                                    >
+                                      50
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="start"
+                                      x="548"
+                                      y="94.45577557755776"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#444444"
+                                    >
+                                      75
+                                    </text>
+                                  </g>
+                                  <g>
+                                    <text
+                                      text-anchor="start"
+                                      x="548"
+                                      y="36.7"
+                                      font-family="Roboto"
+                                      font-size="12"
+                                      stroke="none"
+                                      stroke-width="0"
+                                      fill="#444444"
+                                    >
+                                      100
+                                    </text>
+                                  </g>
+                                </g>
+                              </g>
+                              <g></g>
+                            </svg>
+                            <div
+                              aria-label="A tabular representation of the data in the chart."
+                              style="
+                                position: absolute;
+                                left: -10000px;
+                                top: auto;
+                                width: 1px;
+                                height: 1px;
+                                overflow: hidden;
+                              "
+                            >
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th>barAnnotationText</th>
+                                    <th>lineAnnotationText</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>‪20 July at 9:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪21 July at 9:00 pm‬</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪22 July at 9:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 5:00 am‬</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪23 July at 9:00 pm‬</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪24 July at 9:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪25 July at 9:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 1:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 9:00 am‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 1:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 5:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪26 July at 9:00 pm‬</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪27 July at 1:00 am‬</td>
+                                    <td>76</td>
+                                    <td>65</td>
+                                  </tr>
+                                  <tr>
+                                    <td>‪27 July at 5:00 am‬</td>
+                                    <td>0</td>
+                                    <td>100</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          aria-hidden="true"
+                          style="
+                            display: none;
+                            position: absolute;
+                            top: 298px;
+                            left: 582px;
+                            white-space: nowrap;
+                            font-family: Roboto;
+                            font-size: 12px;
+                          "
+                        >
+                          ...
+                        </div>
+                        <div></div>
+                      </div></div
+                  ></fe-combo-chart-directive>
+                </div>
+              </ng-include>
+            </div>
+          </div>
+          <!---->
+        </widget>
+      </ng-include></trends-widget
+    ><!---->
+    <feed-item-carousel
+      title="Related News"
+      selected-tab="ctrl.currentFeedItemType"
+      list="ctrl.carousel.list"
+      ><div class="feed-item-carousel border-separator">
+        <div class="small-title">Related News</div>
+        <div
+          class="feed-item-carousel-wrapper carousel"
+          ng-class="{'is-touch': isTouch}"
+          hide-buttons="false"
+          tracking-name="Related News"
+          viewable-items-count="numberOfViewableItems"
+        >
+          <!---->
+
+          <div class="carousel-wrapper">
+            <ng-transclude
+              class="carousel-items"
+              ng-class="{'browser-ie': isBrowserIE}"
+              ng-style="{
+          'transform': 'translate(' + xTransform + 'px, 0px)',
+          '-webkit-transform': 'translate(' + xTransform + 'px, 0px)'
+        }"
+              style="transform: translate(0px, 0px)"
+            >
+              <!----><!----><a
+                ng-href="https://www.irishnews.com/arts/music/2023/07/21/news/new_sinead_o_connor_set_for_our_television_screens-3457819/"
+                ng-repeat="item in list track by $index"
+                ng-include="'/components/feed/feed-item-carousel-directive/feed-item-carousel-atom.html'"
+                title=""
+                target="_blank"
+                track="['Trending Searches ' + selectedTab, 'click', 'carousel item: ' + title]"
+                ng-style="{'width': atomWidth}"
+                href="https://www.irishnews.com/arts/music/2023/07/21/news/new_sinead_o_connor_set_for_our_television_screens-3457819/"
+                style="width: 264px"
+                ><div class="feed-item-carousel-item">
+                  <div class="carousel-image-wrapper">
+                    <!----><img
+                      ng-src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRZ11FyWQ4zcZXfscg_0TTUsLmptMerE1-fF8TmYIMbslBEz_OEfVj16bFadr8"
+                      ng-if="::item.imgUrl"
+                      role="presentation"
+                      src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRZ11FyWQ4zcZXfscg_0TTUsLmptMerE1-fF8TmYIMbslBEz_OEfVj16bFadr8"
+                    /><!---->
+                    <!---->
+                    <div class="image-text" ng-if="item.shouldShowImageSource">
+                      Irish News
+                    </div>
+                    <!---->
+                  </div>
+                  <div
+                    class="carousel-text-wrapper with-image"
+                    ng-class="{'with-image': item.imgUrl}"
+                  >
+                    <div class="item-title" multi-line-ellipsis="">
+                      Sinéad O'Connor documentary Nothing ...
+                    </div>
+                    <div class="item-subtitles" title="Irish News • 5 days ago">
+                      <span>Irish News</span> • <span>5 days ago</span>
+                    </div>
+                  </div>
+                </div> </a
+              ><!----><!----><a
+                ng-href="https://www.express.co.uk/celebrity-news/1794089/childhood-abuse-inspired-Sinead-O-Connor-s-global-hit"
+                ng-repeat="item in list track by $index"
+                ng-include="'/components/feed/feed-item-carousel-directive/feed-item-carousel-atom.html'"
+                title=""
+                target="_blank"
+                track="['Trending Searches ' + selectedTab, 'click', 'carousel item: ' + title]"
+                ng-style="{'width': atomWidth}"
+                href="https://www.express.co.uk/celebrity-news/1794089/childhood-abuse-inspired-Sinead-O-Connor-s-global-hit"
+                style="width: 264px"
+                ><div class="feed-item-carousel-item">
+                  <div class="carousel-image-wrapper">
+                    <!----><img
+                      ng-src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS8lkMnjGq8uaKhcVWutV7w9uzMFguVHM1-4PF-i6omdICqG1Eh6DHGQBS0JGE"
+                      ng-if="::item.imgUrl"
+                      role="presentation"
+                      src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS8lkMnjGq8uaKhcVWutV7w9uzMFguVHM1-4PF-i6omdICqG1Eh6DHGQBS0JGE"
+                    /><!---->
+                    <!---->
+                    <div class="image-text" ng-if="item.shouldShowImageSource">
+                      Daily Express
+                    </div>
+                    <!---->
+                  </div>
+                  <div
+                    class="carousel-text-wrapper with-image"
+                    ng-class="{'with-image': item.imgUrl}"
+                  >
+                    <div class="item-title" multi-line-ellipsis="">
+                      How childhood abuse inspired Sinead O’Connor’s global ...
+                    </div>
+                    <div
+                      class="item-subtitles"
+                      title="Daily Express • 4 days ago"
+                    >
+                      <span>Daily Express</span> • <span>4 days ago</span>
+                    </div>
+                  </div>
+                </div> </a
+              ><!---->
+            </ng-transclude>
+          </div>
+
+          <!---->
+        </div>
+      </div>
+    </feed-item-carousel>
+    <!----><chips-list
+      title="Related Queries"
+      list="ctrl.chips.list"
+      selected-tab="ctrl.currentFeedItemType"
+      ng-if="ctrl.chips.list.length"
+      ><div class="chips-list border-separator">
+        <div class="small-title">Related Queries</div>
+        <div class="list">
+          <!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore hunter biden"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22hunter+biden%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22hunter+biden%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            hunter biden </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore mitch mcconnell"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22mitch+mcconnell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22mitch+mcconnell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            mitch mcconnell </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead oconnor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+oconnor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+oconnor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead oconnor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor cause of death"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+cause+of+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+cause+of+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor cause of death </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore chris cornell"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22chris+cornell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22chris+cornell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            chris cornell </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o+connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o+connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor songs"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+songs%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+songs%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor songs </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor son"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+son%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+son%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor son </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore nothing compares to you"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22nothing+compares+to+you%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22nothing+compares+to+you%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            nothing compares to you </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore shane o'connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22shane+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22shane+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            shane o'connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinéad o'connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sin%C3%A9ad+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sin%C3%A9ad+o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinéad o'connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead oconner"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+oconner%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+oconner%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead oconner </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore mcconnell"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22mcconnell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22mcconnell%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            mcconnell </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor death"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor death </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor suicide"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+suicide%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+suicide%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor suicide </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor 2023"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+2023%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+2023%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor 2023 </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o'connor children"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o'connor+children%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o'connor+children%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o'connor children </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead oconnor cause of death"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+oconnor+cause+of+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+oconnor+cause+of+death%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead oconnor cause of death </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinead o’connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sinead+o%E2%80%99connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sinead+o%E2%80%99connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinead o’connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore o'connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22o'connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            o'connor </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore how did sinead o connor die"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22how+did+sinead+o+connor+die%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22how+did+sinead+o+connor+die%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            how did sinead o connor die </a
+          ><!----><a
+            ng-repeat="chip in list track by $index"
+            class="chip"
+            title="Explore sinéad o’connor"
+            track="['Trending Searches ' + selectedTab, 'click', 'chip title: ' + chip.title]"
+            ng-href="/trends/explore?q=%22sin%C3%A9ad+o%E2%80%99connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+            href="/trends/explore?q=%22sin%C3%A9ad+o%E2%80%99connor%22&amp;date=2023-07-20T12%5C:00%5C:00+2023-07-26T21%5C:20%5C:00&amp;geo=US"
+          >
+            sinéad o’connor </a
+          ><!---->
+        </div>
+      </div> </chips-list
+    ><!----> </ng-include
+  ><!---->
+</md-content>

@@ -29,6 +29,72 @@ We get the results of two data sources and merge then together for the model tra
 
 These two sources are the arguments to the ```processData(realTimeTrendsData: any, realTimeTrendsPageData: any)``` function.
 
+### Decision Tree Classifier
+
+The idea is to retrieve real-time trends from the Google Trends API and use a machine learning model to predict if a search trend will become a major trend with over 500,000 searches.
+
+We'll need to gather relevant data for training the model, fine-tune the model, and perform testing and validation to achieve accurate predictions.
+
+Below is an outline of the data gathering and creation process.
+
+#### 1. Data Collection
+
+Collect data from the Google Trends API (realTimeTrendsData) and the web page (realTimeTrendsPageData).
+Match the trends in both data sources to create a unified dataset.
+
+#### 2. Data Preprocessing
+
+Clean the data: Handle missing values, remove duplicates, and ensure consistency.
+Extract relevant features from both sources. Some possible features include:
+
+- Trend title
+- Entity names
+- URLs of news articles or sources
+- Image URLs (if needed for any analysis)
+- Trending status (whether it crossed 500,000 searches or not)
+
+#### 3. Data Labeling
+
+For the unified dataset, we'll need to label each trend to indicate whether it became a major trend (with over 500,000 searches) or not. This information can be gathered using the dailyTrends API once a day.
+
+#### 4. Data Storage
+
+Store the preprocessed and labeled data in a structured format, such as a CSV file or a database, for easy retrieval during model training.
+
+#### 5. Model Training
+
+Split the dataset into training and testing sets.
+Train the Decision Tree Classifier on the training set using the relevant features as input and the trend's status (major trend or not) as the output label.
+
+#### 6. Model Evaluation
+
+Evaluate the trained model's performance on the testing set to assess its accuracy and other relevant metrics.
+
+#### 7. Model Use
+
+Once the model is trained and evaluated, we can use it to make predictions on new data.
+
+### Brief of the Dataset
+
+The dataset should contain rows, where each row represents a trend, and columns represent features and labels. Here's how a brief snapshot of the dataset might look:
+
+```md
+--------------------------------------------------------------------
+| Trend Title              | Entity Names           | IsMajorTrend |
+--------------------------------------------------------------------
+| Chelsea F.C.             | Football, Sports       | 1            |
+| Quantum Computing        | Technology, Science    | 0            |
+| Travis Scott             | Music, Entertainment   | 1            |
+| ...                      | ...                    | ...          |
+--------------------------------------------------------------------
+```
+
+In this example, the dataset includes a "Trend Title" column representing the title of each trend, an "Entity Names" column containing related entities, and an "IsMajorTrend" column (the label) with a value of 1 if the trend became a major trend and 0 otherwise.
+
+#### Data Collection
+
+Gather historical search trend data for multiple search trends. For each search trend, collect features that might be relevant for prediction. Features could include attributes like the number of searches at different time intervals, the trend's category, previous trend performance, related news articles, etc.
+
 ### realTimeTrendsData
 
 Using the [google trends api](https://www.npmjs.com/package/google-trends-api#realTimeTrends) to get current real-time trending data.
@@ -164,54 +230,76 @@ Example results:
 
 ### realTimeTrendsPageData
 
-### ML Approach
+This will be parsed using Cheerio to get the trend titles and the graph of search volume over time.
 
-The idea is to retrieve real-time trends from the Google Trends API and use a simple machine learning model (Decision Tree Classifier in this example) to predict if a search trend will become a major trend with over 500,000 searches.
+### Daily Trends
 
-This is a simplified example, and in a real-world scenario, you'll need to gather relevant data for training the model, fine-tune the model, and perform rigorous testing and validation to achieve accurate predictions.
+This data can be used to mark the above data as either major trend or not.  If the saved titles appear on the daily trends list, then they did indeed become major searches.
 
-#### Data Collection
-
-Gather historical search trend data for multiple search trends. For each search trend, collect features that might be relevant for prediction. Features could include attributes like the number of searches at different time intervals, the trend's category, previous trend performance, related news articles, etc.
+If they do not appear on the list, then the are marked as not major trends.
 
 #### Data Preprocessing
 
 Clean and pre-process the collected data to make it suitable for training the machine learning model. This may involve handling missing values, encoding categorical features, scaling numerical features, and splitting the data into training and testing sets.
 
-### Mathmatical approach
+### Mathematical approach
 
 Instead of using tensore-flow, isn't there a mathematical way to take sparkline data like this and determine programmatically if a trend has incremental growth potential?
 
-One common approach is to use time series analysis techniques to identify patterns and trends in the data. Here's a high-level outline of how you can approach this programmatically:
+One common approach is to use time series analysis techniques to identify patterns and trends in the data. Here's a high-level outline of how we can approach this programmatically:
 
 Data Preparation:
-Extract the data points from the <path> element and convert them into a time series dataset. In your case, it seems like the data points are represented as a series of (x, y) coordinates in the SVG path. You need to parse the coordinates and create a time series with the appropriate time intervals (assuming each point represents a specific time).
+Extract the data points from the <path> element and convert them into a time series dataset. In our case, it seems like the data points are represented as a series of (x, y) coordinates in the SVG path. We need to parse the coordinates and create a time series with the appropriate time intervals (assuming each point represents a specific time).
 
 Time Series Analysis:
-Once you have the time series data, you can perform various time series analysis techniques to determine if the trend has incremental growth potential. Some common methods include:
+Once we have the time series data, we can perform various time series analysis techniques to determine if the trend has incremental growth potential. Some common methods include:
 
 Moving Averages: Calculate the moving average of the time series to smooth out noise and identify trends.
 Trend Decomposition: Decompose the time series into its components like trend, seasonality, and residuals to analyze the trend separately.
 Autocorrelation: Check for any significant correlation between the time series and its past lags, which indicates persistence in the trend.
 Incremental Growth Potential Assessment:
-Based on the analysis from the time series techniques, you can programmatically determine if the trend exhibits incremental growth potential. Look for characteristics such as steady upward movement, increasing trend values over time, and minimal or no significant fluctuations.
+Based on the analysis from the time series techniques, we can programmatically determine if the trend exhibits incremental growth potential. Look for characteristics such as steady upward movement, increasing trend values over time, and minimal or no significant fluctuations.
 
 Threshold Determination:
-To identify if the trend has incremental growth potential, you might need to define specific thresholds or rules based on the domain or problem requirements. For example, you could set a minimum percentage increase over a specific time period to classify a trend as having incremental growth potential.
+To identify if the trend has incremental growth potential, we might need to define specific thresholds or rules based on the domain or problem requirements. For example, we could set a minimum percentage increase over a specific time period to classify a trend as having incremental growth potential.
 
 Alerting Mechanism:
-Depending on your use case, you can implement an alerting mechanism to trigger notifications or actions when a trend is identified as having incremental growth potential. This can be useful for real-time monitoring or decision-making purposes.
+Depending on our use case, we can implement an alerting mechanism to trigger notifications or actions when a trend is identified as having incremental growth potential. This can be useful for real-time monitoring or decision-making purposes.
 
-It's important to note that time series analysis can be complex, and the best approach will depend on the nature of your data and the specific problem you are trying to solve. Additionally, while mathematical and statistical methods can provide valuable insights, they might not capture all aspects of more complex trends. In such cases, machine learning techniques like those offered by TensorFlow could be beneficial.
+It's important to note that time series analysis can be complex, and the best approach will depend on the nature of our data and the specific problem we are trying to solve. Additionally, while mathematical and statistical methods can provide valuable insights, they might not capture all aspects of more complex trends. In such cases, machine learning techniques like those offered by TensorFlow could be beneficial.
 
 Keep in mind that analyzing and predicting trends in real-world data can be challenging, and it's often a combination of multiple approaches and domain expertise that yields the most accurate results.
 
 ### Rising  "Breakout" searches
 
-relatedQueries: Users searching for your term also searched for these queries. The following metrics are returned:
+relatedQueries: Users searching for our term also searched for these queries. The following metrics are returned:
 
 Top - The most popular search queries. Scoring is on a relative scale where a value of 100 is the most commonly searched query, 50 is a query searched half as often, and a value of 0 is a query searched for less than 1% as often as the most popular query.
 Rising - Queries with the biggest increase in search frequency since the last time period. Results marked "Breakout" had a tremendous increase, probably because these queries are new and had few (if any) prior searches.
+
+## Daily Trends implementation
+
+Here is the call to get this data.
+
+```js
+    return googleTrends.dailyTrends(
+      {
+        trendDate: new Date(),
+        geo: 'US',
+      },
+      function (err, results) {
+        if (err) {
+          return err;
+        } else {
+          const defaultObj = JSON.parse(Object(results)).default
+            .trendingSearchesDays[0].trendingSearches;
+          return defaultObj;
+        }
+      }
+    );
+```
+
+It will be used to annotate the data with a IsMajorTrend boolean.
 
 ## Installation
 
