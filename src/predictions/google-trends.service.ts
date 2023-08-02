@@ -13,13 +13,21 @@ import * as path from 'path';
 export class GoogleTrendsService {
   async getRealTimeTrends(): Promise<any> {
     return new Promise((resolve, reject) => {
-      googleTrends.realTimeTrends(config, (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
+      googleTrends.dailyTrends(
+        {
+          trendDate: new Date(),
+          geo: config.geo,
+        },
+        function (err, results) {
+          if (err) {
+            return err;
+          } else {
+            const defaultObj = JSON.parse(Object(results)).default
+              .trendingSearchesDays[0].trendingSearches;
+            return defaultObj;
+          }
         }
-      });
+      );
     });
   }
 
@@ -154,8 +162,9 @@ export class GoogleTrendsService {
 
   saveTrendsDataToJson(data: any): void {
     const currentDirectory = process.cwd();
-    const timestamp = new Date().toISOString().replace(/:/g, '-'); // Replace colons with dashes
-    const fileName = `trends_data_${timestamp}.json`;
+    const currentDate = new Date();
+    const dateWithoutTime = currentDate.toISOString().split('T')[0];
+    const fileName = `trends_data_${dateWithoutTime}.json`;
     const filePath = path.join(currentDirectory, fileName);
   
     try {

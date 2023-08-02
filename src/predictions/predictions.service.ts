@@ -12,14 +12,22 @@ export class PredictionsService {
 
   async findAll(): Promise<any> {
     return new Promise((resolve, reject) => {
-      googleTrends.realTimeTrends(config, (err, results) => {
-        if (err) {
-          console.log('err', err);
-          reject(err);
-        } else {
-          resolve(results);
-        }
-      });
+      googleTrends.dailyTrends(
+        {
+          trendDate: new Date(),
+          geo: config.geo,
+        },
+        function (err, results) {
+          if (err) {
+            reject(err);
+          } else {
+            const dailyTrendsObj = JSON.parse(Object(results)).default
+              .trendingSearchesDays[0].trendingSearches;
+            console.log('dailyTrendsObj', dailyTrendsObj.length);
+            resolve(dailyTrendsObj);
+          }
+        },
+      );
     });
   }
 

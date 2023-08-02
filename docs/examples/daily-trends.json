@@ -1,0 +1,411 @@
+[
+    ({
+        title: {
+            query: "Lizzo",
+            exploreLink: "/trends/explore?q=Lizzo&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "200K+",
+        relatedQueries: [[Object]],
+        image: {
+            newsUrl: "https://www.bbc.com/news/entertainment-arts-66379169",
+            source: "BBC News",
+            imageUrl:
+                "https://t2.gstatic.com/images?q=tbn:ANd9GcS-AF5K4MCqdm6Bqf5x_iEPyrONu-QUph7I7AoImQ_8fPIidb4xD16a70lB73SL-bgsDVH5eZZW",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Lizzo#Lizzo",
+    },
+    {
+        title: {
+            query: "Mega Millions drawing",
+            exploreLink:
+                "/trends/explore?q=Mega+Millions+drawing&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "100K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.cnn.com/2023/08/01/us/mega-millions-tuesday-drawing-lottery-jackpot/index.html",
+            source: "CNN",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcTDzKpUlMCGXB-ddpmPijgznkFjk38LRwVwfy0c5TnIdIyeGjut9f9agmrWLV6-btbPLUzrz0aq",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Mega+Millions+drawing#Mega%20Millions%20drawing",
+    },
+    {
+        title: {
+            query: "Leprosy",
+            exploreLink: "/trends/explore?q=Leprosy&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "50K+",
+        relatedQueries: [[Object]],
+        image: {
+            newsUrl:
+                "https://www.cnn.com/2023/08/01/health/leprosy-central-florida/index.html",
+            source: "CNN",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcSorATsdZZehyeBbTtP0ASKNZDL0y7VHzNrSkJrEfiP-itICFELA0q-4zeZB5PeavEjmOihDk0P",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Leprosy#Leprosy",
+    },
+    {
+        title: {
+            query: "Sheila Oliver",
+            exploreLink: "/trends/explore?q=Sheila+Oliver&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "50K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.diverseeducation.com/leadership-policy/article/15543471/new-jersey-lt-gov-sheila-oliver-dies-at-71",
+            source: "Diverse: Issues in Higher Education",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcQQDEduMU-kxrHDchQJ1wMqAPRVrw_c-Nh7PZEDiQDh2EIUPD8jGDSEhpWKNXG4WIMiQmqvKy1v",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Sheila+Oliver#Sheila%20Oliver",
+    },
+    {
+        title: {
+            query: "Supermoon",
+            exploreLink: "/trends/explore?q=Supermoon&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "50K+",
+        relatedQueries: [[Object]],
+        image: {
+            newsUrl: "https://www.bbc.com/news/science-environment-66376331",
+            source: "BBC News",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcQeEm6CKj4PReMxxikpsvZVn7tD2cU2dAx9f64n23FiezKjgYPXotOmPz6dlIFx-xgI3Rnf4DPp",
+        },
+        articles: [
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+        ],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Supermoon#Supermoon",
+    },
+    {
+        title: {
+            query: "Henrietta Lacks",
+            exploreLink:
+                "/trends/explore?q=Henrietta+Lacks&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.npr.org/2023/08/01/1191283359/henrietta-lacks-descendants-settlement-stolen-cells",
+            source: "NPR",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcQhy9PS-mxCwUQm3_Q2Z1TIaBtyaJxehDEzk8RZnLKS1PTyIMYOvrWUV_FLHqYgFcXqn3A9aMZG",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Henrietta+Lacks#Henrietta%20Lacks",
+    },
+    {
+        title: {
+            query: "Jack Flaherty",
+            exploreLink: "/trends/explore?q=Jack+Flaherty&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.espn.com/mlb/story/_/id/38116728/orioles-acquire-right-hander-jack-flaherty-cardinals",
+            source: "ESPN",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcTaZwavQizF3mKSUcjzAGbpqewVTjp74d0SAIQsW08-KtMGDkvQPx0udhg2erULOY-wM8VUbcFS",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Jack+Flaherty#Jack%20Flaherty",
+    },
+    {
+        title: {
+            query: "Michael Lorenzen",
+            exploreLink:
+                "/trends/explore?q=Michael+Lorenzen&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.mlb.com/news/michael-lorenzen-traded-to-phillies",
+            source: "MLB.com",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcRjk3u6yACgQVAS3XogWzzvvVs_C_e5eKSW1UToIgiGYerEbpqCyv0fkpoMlpGM7q1h3AAPefQD",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Michael+Lorenzen#Michael%20Lorenzen",
+    },
+    {
+        title: {
+            query: "TMNT: Mutant Mayhem",
+            exploreLink:
+                "/trends/explore?q=TMNT:+Mutant+Mayhem&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.ign.com/articles/teenage-mutant-ninja-turtles-mutant-mayhem-post-credits-scene-ending-explained",
+            source: "IGN",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcQN3gJ7L_fOPA08gJNR8VDh8vgFSo5B7spo0qzmIH8bKBK9SMlotXJ68W4Ie-TpZKBJZcreaoJZ",
+        },
+        articles: [
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+        ],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=TMNT:+Mutant+Mayhem#TMNT:%20Mutant%20Mayhem",
+    },
+    {
+        title: {
+            query: "Cedar Point",
+            exploreLink: "/trends/explore?q=Cedar+Point&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.freep.com/story/news/local/michigan/2023/08/01/cedar-point-top-thrill-2-roller-coaster/70503466007/",
+            source: "Detroit Free Press",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcRauA1QslrnPCKwYT1hhZhL_NbCic7tH8_WHZjeK3peN8C4CGh8MAIiuAGvmRg0RVat5_KnubOY",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Cedar+Point#Cedar%20Point",
+    },
+    {
+        title: {
+            query: "Uber stock",
+            exploreLink: "/trends/explore?q=Uber+stock&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.cnbc.com/2023/08/01/uber-uber-q2-earnings-2023.html",
+            source: "CNBC",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcQ9tgbHPMRzFCsThu6vKxu2xP9t987yrMIl2Z97nKFlDqnLseuwGy_iJOqpcUf-ld2fftF6jIxP",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Uber+stock#Uber%20stock",
+    },
+    {
+        title: {
+            query: "LK-99",
+            exploreLink: "/trends/explore?q=LK-99&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl: "https://www.globaltimes.cn/page/202308/1295505.shtml",
+            source: "Global Times",
+            imageUrl:
+                "https://t2.gstatic.com/images?q=tbn:ANd9GcT6zpb-XYiU1pPPF5au4I2jtgDMgJEALTGM3fI_dA5rZtMIV50c8mYtX9OsTAdk3KRfzU1JGeNl",
+        },
+        articles: [[Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=LK-99#LK-99",
+    },
+    {
+        title: {
+            query: "Luis Urias",
+            exploreLink: "/trends/explore?q=Luis+Urias&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.boston.com/sports/boston-red-sox/2023/08/01/red-sox-luis-urias-mlb-baseball-trade-deadline-chaim-bloom-milwaukee-brewers/",
+            source: "Boston.com",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcREKsqQKH9CDlkFMSyvIPFBWMBIamkff5fG1WHDxBY4UfBLRTeCUpmYgpw1xi63v68rO92F6c9o",
+        },
+        articles: [
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+        ],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Luis+Urias#Luis%20Urias",
+    },
+    {
+        title: {
+            query: "Sinead",
+            exploreLink: "/trends/explore?q=Sinead&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.madinamerica.com/2023/08/everyones-afraid-of-an-angry-woman-honoring-sinead-oconnor/",
+            source: "James Moore",
+            imageUrl:
+                "https://t2.gstatic.com/images?q=tbn:ANd9GcTAI1L-SX4YmDXg_sT8MhJnRlgOpo_XB4MJRJkquBoqZXPw_ftUdo3j3NLjKDxqNNXH-jscNS-h",
+        },
+        articles: [[Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Sinead#Sinead",
+    },
+    {
+        title: {
+            query: "Tommy Pham",
+            exploreLink: "/trends/explore?q=Tommy+Pham&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.cbssports.com/mlb/news/tommy-pham-trade-mets-send-outfielder-to-diamondbacks-in-deadline-deal-per-report/",
+            source: "CBS sports.com",
+            imageUrl:
+                "https://t2.gstatic.com/images?q=tbn:ANd9GcRYb4RV8eJrGJdi3imFJHTv2eIMe8ATpzjKz7KidQuvZBe8KvjmMMkH5DjVnnUGs37v0HGadZMh",
+        },
+        articles: [
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+        ],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Tommy+Pham#Tommy%20Pham",
+    },
+    {
+        title: {
+            query: "Jean Segura",
+            exploreLink: "/trends/explore?q=Jean+Segura&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.beaconjournal.com/story/sports/mlb/cleveland-guardians/2023/08/01/cleveland-guardians-trade-josh-bell-miami-marlins-jean-segura-prospect-khalil-watson/70509748007/",
+            source: "Akron Beacon Journal",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcRX3DgGjXKs9aoMxQ-sj2XOy8Mmu8II3EERnW5YMCDHGY5f-EXqkhDP42Wj2EPpwoaXzl-iLK65",
+        },
+        articles: [
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+            [Object],
+        ],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Jean+Segura#Jean%20Segura",
+    },
+    {
+        title: {
+            query: "Serena Williams",
+            exploreLink:
+                "/trends/explore?q=Serena+Williams&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.nbcwashington.com/entertainment/serena-williams-and-alexis-ohanian-reveal-sex-of-baby-no-2/3395700/",
+            source: "NBC4 Washington",
+            imageUrl:
+                "https://t0.gstatic.com/images?q=tbn:ANd9GcRYWzbOVDDEjbeQjPhol4cIKspZiH7GYyw1_7wUwcYtdDHr2M2dPuB4NmYBOCyA4U8TX09XY_Ib",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Serena+Williams#Serena%20Williams",
+    },
+    {
+        title: {
+            query: "Loki Season 2",
+            exploreLink: "/trends/explore?q=Loki+Season+2&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.usatoday.com/story/entertainment/tv/2023/08/01/loki-season-2-release-date-trailer-cast/70505074007/",
+            source: "USA TODAY",
+            imageUrl:
+                "https://t1.gstatic.com/images?q=tbn:ANd9GcQ3vd7BMGZMJvSmbeZUKL8PstgR-NqpvEYk3FpSVex48UVzsA2m4m2K9zePKBRExX5IzqjLMh1S",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Loki+Season+2#Loki%20Season%202",
+    },
+    {
+        title: {
+            query: "Big Brother' 25 cast",
+            exploreLink:
+                "/trends/explore?q=Big+Brother'+25+cast&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://globalnews.ca/news/9869765/big-brother-season-25-cast-houseguests/",
+            source: "Globalnews.ca",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcSzDh8Xi1jV9NtJC_IHMtBwbb0M7QIBUIc2TGueuw5HRz4NomdVKjbbvAT4liK-kuAF_zuv7ll8",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=Big+Brother'+25+cast#Big%20Brother'%2025%20cast",
+    },
+    {
+        title: {
+            query: "John Castic",
+            exploreLink: "/trends/explore?q=John+Castic&date=now+7-d&geo=US",
+        },
+        formattedTraffic: "20K+",
+        relatedQueries: [],
+        image: {
+            newsUrl:
+                "https://www.cbsnews.com/newyork/news/nypd-another-27-year-old-man-found-dead-in-newtown-creek/",
+            source: "CBS News",
+            imageUrl:
+                "https://t3.gstatic.com/images?q=tbn:ANd9GcS-pHaPZxqbkplfxVLEecaqHY4Ee_zr4Cyw3Tk0bwlMnOYAylxzZi4aEtMpYkMGI-dBWM91UHJ_",
+        },
+        articles: [[Object], [Object], [Object], [Object], [Object], [Object]],
+        shareUrl:
+            "https://trends.google.com/trends/trendingsearches/daily?geo=US&tt=John+Castic#John%20Castic",
+    })
+];

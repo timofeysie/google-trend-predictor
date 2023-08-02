@@ -51,3 +51,42 @@ Sensitive to noisy data. It can overfit noisy data.
 The small variation(or variance) in data can result in the different decision tree. This can be reduced by bagging and boosting algorithms.
 
 Decision trees are biased with imbalance dataset, so it is recommended that balance out the dataset before creating the decision tree.
+
+## The dataset
+
+The current proposed data set will be the following:
+
+```json
+[
+  {
+    "title": "Tijjani Reijnders",
+    "titles": [
+      "Tijjani Reijnders",
+      "A.C. Milan",
+      "FC Barcelona",
+      "Xavi",
+      "AZ Alkmaar",
+      "Stefano Pioli"
+    ],
+    "sparkline": "M0,98L8.695652173913043,98L17.391304347826086,98L26.08695652173913,99L34.78260869565217,99L43.47826086956522,99L52.17391304347826,99L60.86956521739131,99L69.56521739130434,99L78.26086956521739,99L86.95652173913044,99L95.65217391304348,99L104.34782608695652,99L113.04347826086956,98L121.73913043478262,98L130.43478260869566,98L139.1304347826087,98L147.82608695652172,97L156.52173913043478,96L165.2173913043478,95L173.91304347826087,93L182.6086956521739,89L191.30434782608697,46L200,0",
+    "isMajorTrend": false
+  },
+```
+
+The sparkline data is a time series data set for different search trends, with each entry representing a specific trend along with related search terms and a sparkline showing the trend's popularity over time.
+
+To determine if this data set is suitable for training a Decision Tree Classifier model, consider the following points:
+
+Data Quality: Ensure that the data is accurate, complete, and representative of the trends you want to classify.
+
+Feature Engineering: the "isMajorTrend" boolean flag is relevant feature for classification.
+
+Data Size: the minimum size will start at 20000 trends.
+
+Class Balance: Check if the classes are balanced in the data set. Imbalanced classes may affect the model's performance and may require additional techniques like class weighting or resampling.
+
+Model Evaluation: Decide on appropriate evaluation metrics to assess the performance of the Decision Tree Classifier.
+
+Model Interpretability: Decision trees are inherently interpretable models, making it easier to understand and interpret their predictions.
+
+The suitability of using this data for training a Decision Tree Classifier model depends on the factors mentioned above. Before proceeding with training, it's essential to preprocess the data, split it into training and testing sets, and carefully evaluate the model's performance to ensure it meets our requirements for the specific classification task.

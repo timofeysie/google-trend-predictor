@@ -21,7 +21,9 @@ npm run test:cov
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-http://localhost:3000/process-data
+http://localhost:3000/process-data <-- parses the real-time trends and saves them to a file.
+
+http://localhost:3000/predictions <-- loads daily trends and compares to the above
 
 ## Real Time Trends
 
