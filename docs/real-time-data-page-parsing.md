@@ -143,5 +143,27 @@ Realtime search trends are not available for this region. Try a different region
 
 ## using human-like interaction.
 
-
 <a href="https://trends.google.com/trends/trendingsearches/daily?geo=KR&amp;hl=en-US" class="MCs1Pd UbEQCe VfPpkd-rymPhb-ibnC6b VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-M1Soyc-Bz112c VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-Woal0c-RWgCYc" jsaction="keydown:RDtNu; keyup:JdS61c; focusin:MeMJlc; focusout:bkTmIf;mousedown:teoBgf; mouseup:NZPHBc; mouseenter:SKyDAe; mouseleave:xq3APb; touchstart:jJiBRc; touchmove:kZeBdd; touchend:VfAz8; change:uOgbud;" role="menuitem" aria-label="Trending now Link" tabindex="-1"><span class="VfPpkd-rymPhb-pZXsl"></span><span class="VfPpkd-rymPhb-KkROqb" aria-hidden="true"><i class="google-material-icons VfPpkd-rymPhb-Abojl" aria-hidden="true" data-mt="8F6486BF-D2A5-410E-91C9-E13489332881">trending_up</i></span><span class="VfPpkd-rymPhb-Gtdoyb" aria-hidden="true"><span class="VfPpkd-rymPhb-fpDzbe-fmcmS" jsname="K4r5Ff">Trending now</span></span></a>
+
+## Using Puppeteer
+
+Due to the above reasons, we use Puppeteer to load the page, click on the more results button until there is no more results, then load the html.
+
+Then we use Cheerio to parse the following data:
+
+```json
+[
+  {
+    "title": "Tijjani Reijnders",
+    "titles": [
+      "Tijjani Reijnders",
+      "A.C. Milan",
+      "FC Barcelona",
+      "Xavi",
+      "AZ Alkmaar",
+      "Stefano Pioli"
+    ],
+    "sparkline": "M0,98L8.695652173913043,98L17.391304347826086,98L26.08695652173913,99L34.78260869565217,99L43.47826086956522,99L52.17391304347826,99L60.86956521739131,99L69.56521739130434,99L78.26086956521739,99L86.95652173913044,99L95.65217391304348,99L104.34782608695652,99L113.04347826086956,98L121.73913043478262,98L130.43478260869566,98L139.1304347826087,98L147.82608695652172,97L156.52173913043478,96L165.2173913043478,95L173.91304347826087,93L182.6086956521739,89L191.30434782608697,46L200,0"
+  },
+]
+```

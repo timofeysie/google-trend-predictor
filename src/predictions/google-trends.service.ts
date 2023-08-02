@@ -6,6 +6,8 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs';
+import * as path from 'path';
+
 
 @Injectable()
 export class GoogleTrendsService {
@@ -32,7 +34,10 @@ export class GoogleTrendsService {
     const parsedRealTimeTrendsData = this.parseRealTimeTrendsWitCheerio(
       realTimeTrendsPageData,
     );
-    console.log('parsedRealTimeTrendsData', parsedRealTimeTrendsData);
+    console.log('parsedRealTimeTrendsData', parsedRealTimeTrendsData.length);
+    if (parsedRealTimeTrendsData.length > 0) {
+      this.saveTrendsDataToJson(parsedRealTimeTrendsData);
+    }
 
     const trendingStories = realTimeTrendsData.storySummaries?.trendingStories;
 
@@ -63,16 +68,42 @@ export class GoogleTrendsService {
       executablePath: path_to_your_chrome_executable,
     });
     console.log('puppeteer launched');
+
     try {
       const page = await browser.newPage();
       console.log('puppeteer page ready');
       await page.setExtraHTTPHeaders({
         'accept-language': 'en-US,en;q=0.9',
       });
+
       const realTimeTrendsUrl = `https://trends.google.com/trends/trendingsearches/realtime?geo=${config.geo}&hl=${config.hl}&category=${config.category}`;
       await page.goto(realTimeTrendsUrl);
+
       const trendingNowSelector = 'feed-item';
       await page.waitForSelector(trendingNowSelector, { visible: true });
+      await new Promise((resolve) => setTimeout(resolve, 6000));
+
+      // Function to check if the "Load more" button is present on the page
+      async function isLoadMoreButtonPresent() {
+        return await page.evaluate(() => {
+          return Boolean(document.querySelector('.feed-load-more-button'));
+        });
+      }
+
+      // Function to click the "Load more" button and wait for a few seconds
+      async function clickLoadMoreAndWait() {
+        await page.click('.feed-load-more-button');
+        await page.waitForTimeout(3000); // Adjust the wait time (in milliseconds) as needed
+      }
+
+      let loadMoreButtonPresent = await isLoadMoreButtonPresent();
+
+      while (loadMoreButtonPresent) {
+        await clickLoadMoreAndWait();
+        loadMoreButtonPresent = await isLoadMoreButtonPresent();
+        console.log('loadMoreButtonPresent');
+      }
+
       const htmlContent = await page.content();
       console.log('puppeteer htmlContent', htmlContent.length);
       fs.writeFileSync('search_trends.html', htmlContent);
@@ -85,48 +116,53 @@ export class GoogleTrendsService {
     }
   }
 
-  private parseRealTimeTrendsWitCheerio(data: string): any {
-    const $ = cheerio.load(data);
-    const html = $.html();
-    console.log('HTML data:', html.length);
-    const titles: string[] = [];
-    const sparklineData: any[][] = [];
-    // Find the div with the specific attribute value containing the trending stories
-    const feedItemElements = $('feed-item');
-    console.log('feedItemElements', feedItemElements.length); // 0
-    // Find all the "a" tags within the div
-    const feedItemElementsAnchors = feedItemElements.find('a');
-    console.log('trendElements', feedItemElementsAnchors.length);
+  private parseRealTimeTrendsWitCheerio(htmlContent: string): any {
+    const $ = cheerio.load(htmlContent);
 
-    // Loop through each trend element to extract title and sparkline data
-    feedItemElementsAnchors.each((index, element) => {
-      const title = $(element).text().trim();
-      titles.push(title);
+      // Function to extract sparkline data from a feed item
+      function getSparklineData(feedItem): string {
+        return feedItem.find('.sparkline-chart path').attr('d');
+      }
 
-      // Extract sparkline data from the "path" tag's "d" attribute
-      const sparklinePath = $(element).siblings('path');
-      console.log('sparklinePath', sparklinePath.length);
-      // const sparklinePoints = this.parseSparklineData(sparklinePath);
-      // sparklineData.push(sparklinePoints);
-    });
+      // Function to extract titles data from a feed item
+      function getTitlesData(feedItem): string[] {
+        const titles = [];
+        feedItem.find('.title a').each((index, element) => {
+          titles.push($(element).text().trim());
+        });
+        return titles;
+      }
 
-    return { titles, sparklineData };
+      const trendsData = [];
+
+      // Loop through each feed item and extract the required data
+      $('feed-item').each((index, element) => {
+        const title = $(element).find('.title a').first().text().trim();
+        const sparkline = getSparklineData($(element));
+        const titles = getTitlesData($(element));
+
+        const trendObject = {
+          title,
+          titles,
+          sparkline,
+        };
+        trendsData.push(trendObject);
+      });
+
+      return trendsData;
   }
 
-  private parseSparklineData(sparklinePath: string): number[][] {
-    const points: number[][] = [];
-    // Use regex to extract x, y coordinates from the sparkline path data
-    const regex = /M(\d+),(\d+)L(\d+),(\d+)/g;
-    let match;
-    while ((match = regex.exec(sparklinePath)) !== null) {
-      const x1 = parseInt(match[1]);
-      const y1 = parseInt(match[2]);
-      const x2 = parseInt(match[3]);
-      const y2 = parseInt(match[4]);
-      points.push([x1, y1], [x2, y2]);
+  saveTrendsDataToJson(data: any): void {
+    const currentDirectory = process.cwd();
+    const timestamp = new Date().toISOString().replace(/:/g, '-'); // Replace colons with dashes
+    const fileName = `trends_data_${timestamp}.json`;
+    const filePath = path.join(currentDirectory, fileName);
+  
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+      console.log(`Trends data saved to ${filePath}`);
+    } catch (err) {
+      console.error('Error while saving trends data:', err);
     }
-    return points;
   }
-
-  // You can implement other functions here to preprocess the data or add machine learning algorithms for trend prediction
 }
