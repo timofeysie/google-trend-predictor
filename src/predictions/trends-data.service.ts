@@ -11,9 +11,9 @@ export class TrendsDataService {
     const dateWithoutTime = currentDate.toISOString().split('T')[0];
     const fileName = `trends_data_${dateWithoutTime}.json`;
     const filePath = path.join(currentDirectory, fileName);
-
+// console.log('writing data', data);
     try {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+      fs.writeFileSync(filePath, JSON.stringify(data));
       console.log(`Trends data saved to ${filePath}`);
     } catch (err) {
       console.error('Error while saving trends data:', err);

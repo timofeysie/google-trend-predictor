@@ -168,7 +168,7 @@ export class GoogleTrendsService {
     const filePath = path.join(currentDirectory, fileName);
   
     try {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+      fs.writeFileSync(filePath, JSON.stringify(data));
       console.log(`Trends data saved to ${filePath}`);
     } catch (err) {
       console.error('Error while saving trends data:', err);

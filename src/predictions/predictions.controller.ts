@@ -77,8 +77,10 @@ export class PredictionsController {
             `major trend: ${savedTrend.isMajorTrend} - ${savedTrend.title}`,
           );
         }
+        // console.log('savedTrend', savedTrend);
       }
-      this.trendsDataService.saveTrendsDataToJson(savedData);
+
+      this.trendsDataService.saveTrendsDataToJson(parsedSavedData); // Pass the updated data here
 
       // Now trendsData has the "isMajorTrend" field added to each trend.
       // You can save it back to the file if needed.
