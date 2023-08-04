@@ -1,11 +1,24 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { LogisticRegressionService } from './logistic-regression.service';
+import { TrendsDataService } from '../predictions/trends-data.service';
 
 @Controller('logistic-regression')
 export class LogisticRegressionController {
   constructor(
+    private readonly trendsDataService: TrendsDataService,
     private readonly logisticRegressionService: LogisticRegressionService,
   ) {}
+
+  @Get()
+  async preprocessData(): Promise<any> {
+    const directoryPath = 'data'; // Provide the path to the directory containing JSON files
+    const { features, labels } =
+      await this.trendsDataService.loadAllDataAndPreprocess(directoryPath);
+    // Train the model using the preprocessed data
+    await this.logisticRegressionService.train(features, labels);
+    // Return a success message or an empty object
+    return {};
+  }
 
   @Post('train')
   async trainModel(

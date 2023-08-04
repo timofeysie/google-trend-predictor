@@ -25,6 +25,12 @@ http://localhost:3000/process-data <-- parses the real-time trends and saves the
 
 http://localhost:3000/predictions <-- loads daily trends and compares to the above
 
+GET http://localhost:3000/logistic-regression <-- train the logistic regression model on data loaded from files
+
+POST http://localhost:3000/logistic-regression/train <-- train the dataset from the payload body
+
+POST http://localhost:3000/logistic-regression/predict <-- predict a major trend from the payload
+
 ## Real Time Trends
 
 We get the results of two data sources and merge then together for the model training data.
