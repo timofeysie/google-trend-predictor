@@ -167,3 +167,60 @@ Then we use Cheerio to parse the following data:
   },
 ]
 ```
+
+## Comparing real-time trends with daily trends
+
+### Real-time trend data
+
+The real-time trends are a somewhat fuzzy list of what's going on with searches at the time the request is made.
+
+It simply says at the top of the page: *Past 24 hours*
+
+### Daily trend data
+
+We have to wait for the daily trends data to be complete to see what the final total of the searches was.
+
+The src\predictions\predictions.service.ts calls the googleTrends.dailyTrends() lib API to get the daily list.  
+
+```js
+  trendingSearchesDays: [
+    {
+      date: '20230802',
+      formattedDate: 'Wednesday, August 2, 2023',
+      trendingSearches: [Array]
+    }
+  ],
+  endDateForNextRequest: '20230801',
+  rssFeedPageUrl: 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=US'
+}
+```
+
+The [docs for the google-trends-api](https://www.npmjs.com/package/google-trends-api#dailyTrends) say: *Daily Search Trends highlights searches that jumped significantly in traffic among all searches over the past 24 hours and updates hourly. These search trends show the specific queries that were searched, and the absolute number of searches made. 20 daily trending search results are returned*
+
+At some point, this will have two objects.  We want to use the completed day to compare agains the real-time results saved previously for that same period.
+
+We are allowed to also send a date in the request, so this should be for yesterday's date.
+
+### What dates to use
+
+Call googleTrends.dailyTrends with getUsWestCoastYesterdayDate:
+formattedDate: Monday, July 31, 2023 contains 13
+formattedDate: Sunday, July 30, 2023 contains 6
+
+Call googleTrends.dailyTrends with getUsWestCoastDate:
+formattedDate: Tuesday, August 1, 2023 contains 19
+
+Call googleTrends.dailyTrends with today's date, Korean timezone:
+formattedDate: Wednesday, August 2, 2023 contains 20
+
+The idea is to run these APIs once a day.
+
+- Get a list of real-time trends.
+- Get the daily trends for yesterday using getUsWestCoastDate.
+- Compare them to the real-time trends from the previous day.
+
+Really, we should be using all available data to check the results against.
+
+So we open all data directory files, say for the past week, and check the daily trends for any day against all of them.
+
+Still a ways to go with this project!

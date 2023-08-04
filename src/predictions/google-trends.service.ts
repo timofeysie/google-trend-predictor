@@ -7,10 +7,16 @@ import cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs';
 import * as path from 'path';
+import { TrendsDataService } from './trends-data.service';
 
 
 @Injectable()
 export class GoogleTrendsService {
+
+  constructor(
+    private readonly trendsDataService: TrendsDataService,
+  ) {}
+
   async getRealTimeTrends(): Promise<any> {
     return new Promise((resolve, reject) => {
       googleTrends.dailyTrends(
@@ -44,7 +50,7 @@ export class GoogleTrendsService {
     );
     console.log('parsedRealTimeTrendsData', parsedRealTimeTrendsData.length);
     if (parsedRealTimeTrendsData.length > 0) {
-      this.saveTrendsDataToJson(parsedRealTimeTrendsData);
+      this.trendsDataService.saveTrendsDataToJson(parsedRealTimeTrendsData);
     }
 
     const trendingStories = realTimeTrendsData.storySummaries?.trendingStories;
@@ -114,7 +120,6 @@ export class GoogleTrendsService {
 
       const htmlContent = await page.content();
       console.log('puppeteer htmlContent', htmlContent.length);
-      fs.writeFileSync('search_trends.html', htmlContent);
       return htmlContent;
     } catch (err) {
       console.error('Error while scraping:', err);
@@ -148,11 +153,14 @@ export class GoogleTrendsService {
         const title = $(element).find('.title a').first().text().trim();
         const sparkline = getSparklineData($(element));
         const titles = getTitlesData($(element));
+        const trendSearchUrl = $(element).find('.summary-text a').attr('href');
+
 
         const trendObject = {
           title,
           titles,
           sparkline,
+          trendSearchUrl,
         };
         trendsData.push(trendObject);
       });
@@ -160,18 +168,4 @@ export class GoogleTrendsService {
       return trendsData;
   }
 
-  saveTrendsDataToJson(data: any): void {
-    const currentDirectory = process.cwd();
-    const currentDate = new Date();
-    const dateWithoutTime = currentDate.toISOString().split('T')[0];
-    const fileName = `trends_data_${dateWithoutTime}.json`;
-    const filePath = path.join(currentDirectory, fileName);
-  
-    try {
-      fs.writeFileSync(filePath, JSON.stringify(data));
-      console.log(`Trends data saved to ${filePath}`);
-    } catch (err) {
-      console.error('Error while saving trends data:', err);
-    }
-  }
 }

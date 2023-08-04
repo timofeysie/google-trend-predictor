@@ -61,7 +61,7 @@ For the unified dataset, we'll need to label each trend to indicate whether it b
 
 #### 4. Data Storage
 
-Store the preprocessed and labeled data in a structured format, such as a CSV file or a database, for easy retrieval during model training.
+Store the preprocessed and labeled data in a structured format, such as a CSV file or a database, for easy retrieval during model training.  We will start with json files on the local for now.
 
 #### 5. Model Training
 

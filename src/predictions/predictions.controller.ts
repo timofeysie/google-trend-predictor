@@ -12,6 +12,7 @@ import { CreatePredictionDto } from './dto/create-prediction.dto';
 import { UpdatePredictionDto } from './dto/update-prediction.dto';
 import { TrendsDataService } from './trends-data.service';
 import * as fs from 'fs';
+import * as path from 'path';
 
 @Controller('predictions')
 export class PredictionsController {
@@ -29,7 +30,9 @@ export class PredictionsController {
   @Get()
   async findAll() {
     const googleTrendsData = await this.predictionsService.findAll();
-    const processedTrendsData = await this.processTrendsData(googleTrendsData);
+    const processedTrendsData = await this.compareDailyAndRealtimeTrendsData(
+      googleTrendsData,
+    );
     // // Preprocess the results and extract relevant data for prediction
     // const xTrain: number[] = [];
     // const yTrain: number[] = [];
@@ -49,14 +52,27 @@ export class PredictionsController {
     return { processedTrendsData };
   }
 
-  async processTrendsData(googleDailyTrendsData: any) {
+  /**
+   * Open the saved real-time trends data of the same data and add the isMajorTrend: true flag
+   * to real-time trends that also appear on the daily top trends list.  Other trends will be false.
+   * @param googleDailyTrendsData asdf
+   * @returns asdf
+   */
+  async compareDailyAndRealtimeTrendsData(googleDailyTrendsData: any) {
     console.log('googleDailyTrendsData', googleDailyTrendsData.length);
     try {
-      const currentDate = new Date();
-      const dateWithoutTime = currentDate.toISOString().split('T')[0];
-      const fileName = `trends_data_${dateWithoutTime}.json`;
-      const savedData = fs.readFileSync(fileName, 'utf8');
-      console.log('loaded', fileName);
+      const yesterdayDate =
+        this.trendsDataService.getUsWestCoastYesterdayDate();
+      const yesterdayDateWithoutTime = yesterdayDate
+        .toISOString()
+        .split('T')[0];
+      const currentDirectory = process.cwd();
+      const dataPath = path.join(currentDirectory, 'data');
+      const fileName = `trends_data_${yesterdayDateWithoutTime}.json`;
+      const filePath = path.join(dataPath, fileName);
+
+      const savedData = fs.readFileSync(filePath, 'utf8');
+      console.log('loaded US West Coast Yesterday Date data', fileName);
       const parsedSavedData = JSON.parse(savedData);
 
       for (const savedTrend of parsedSavedData) {
@@ -80,7 +96,10 @@ export class PredictionsController {
         // console.log('savedTrend', savedTrend);
       }
 
-      this.trendsDataService.saveTrendsDataToJson(parsedSavedData); // Pass the updated data here
+      this.trendsDataService.saveTrendsDataToJsonWithFilename(
+        parsedSavedData,
+        fileName,
+      ); // Pass the updated data here
 
       // Now trendsData has the "isMajorTrend" field added to each trend.
       // You can save it back to the file if needed.
