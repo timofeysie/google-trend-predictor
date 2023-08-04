@@ -131,11 +131,41 @@ json
 }
 ```
 
+The training code controller looks like this:
+
+```js
+  @Post('train')
+  async trainModel(
+    @Body() data: { features: number[][]; labels: number[] },
+  ): Promise<void> {
+    const { features, labels } = data;
+    if (
+      !Array.isArray(features) ||
+      !Array.isArray(labels) ||
+      features.length === 0 ||
+      labels.length === 0
+    ) {
+      throw new Error(
+        'Invalid input data. Both features and labels must be non-empty arrays.',
+      );
+    }
+```
+
+The training service looks like this:
+
+```js
+  async train(trainData: number[][], trainLabels: number[]): Promise<void> {
+    const xs = tf.tensor2d(trainData);
+    const ys = tf.tensor1d(trainLabels);
+    await this.model.fit(xs, ys, { epochs: 100 });
+  }
+```
+
 To make predictions, send a POST request to http://localhost:3000/logistic-regression/predict with the following JSON data in the request body:
 
 ```json
 {
-  "data": [
+  "features": [
     [1, 1],
     [0, 0],
     [1, 0]
@@ -143,6 +173,36 @@ To make predictions, send a POST request to http://localhost:3000/logistic-regre
 }
 ```
 
-The API should respond with the predicted labels for the new data points.
+The predict controller looks like this:
 
-This example uses a very simple dataset with only two features. For more complex datasets, you might need to perform data preprocessing and feature engineering to get meaningful results. Additionally, consider adding error handling and input validation for production-ready code.
+```js
+  @Post('predict')
+  predict(@Body() data: { features: number[][] }): number[] {
+    return this.logisticRegressionService.predict(data.features);
+  }
+```
+
+The predict service looks like this:
+
+```js
+  predict(features: number[][]): number[] {
+    const inputs = tf.tensor2d(features);
+    const predictions = this.model.predict(inputs) as tf.Tensor;
+    const predictedLabels = Array.from(predictions.dataSync());
+    predictions.dispose();
+    inputs.dispose();
+    return predictedLabels;
+  }
+```
+
+The API should respond with the predicted labels for the new data points.  It looks like this:
+
+```json
+[
+    0.7843161225318909,
+    0.5,
+    0.5536770224571228
+]
+```
+
+This example uses a very simple dataset with only two features. For our datasets, we will need to perform data preprocessing and feature engineering.

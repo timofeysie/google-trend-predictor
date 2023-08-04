@@ -9,19 +9,29 @@ export class LogisticRegressionController {
 
   @Post('train')
   async trainModel(
-    @Body() trainData: number[][],
-    @Body() trainLabels: number[],
-  ): Promise<string> {
+    @Body() data: { features: number[][]; labels: number[] },
+  ): Promise<void> {
+    const { features, labels } = data;
+    if (
+      !Array.isArray(features) ||
+      !Array.isArray(labels) ||
+      features.length === 0 ||
+      labels.length === 0
+    ) {
+      throw new Error(
+        'Invalid input data. Both features and labels must be non-empty arrays.',
+      );
+    }
+
     try {
-      await this.logisticRegressionService.trainModel(trainData, trainLabels);
-      return 'Model trained successfully!';
+      await this.logisticRegressionService.train(features, labels);
     } catch (error) {
       throw new Error('Error while training the model: ' + error.message);
     }
   }
 
   @Post('predict')
-  predict(@Body() data: number[][]): number[] {
-    return this.logisticRegressionService.predict(data);
+  predict(@Body() data: { features: number[][] }): number[] {
+    return this.logisticRegressionService.predict(data.features);
   }
 }
