@@ -13,7 +13,7 @@ export class TrendsDataService {
       .split('T')[0];
     const fileName = `trends_data_${usWestCoastDateWithoutTime}.json`;
     const filePath = this.constructPath(fileName, '.json', 'data');
-    console.log('saveTrendsDataToJson: writing to filePath', filePath);
+    console.log('1 saveTrendsDataToJson: writing to filePath', filePath);
     try {
       fs.writeFileSync(filePath, JSON.stringify(data));
       console.log(`Trends data saved to ${filePath} using US WestCoastDate`);
@@ -25,7 +25,7 @@ export class TrendsDataService {
   saveTrendsDataToJsonWithFilename(data: any, fileName: string): void {
     const filePath = this.constructPath(fileName, '.json', 'data');
     console.log(
-      'saveTrendsDataToJsonWithFilename: writing to filePath',
+      '2 saveTrendsDataToJsonWithFilename: writing to filePath',
       filePath,
     );
     try {
@@ -103,6 +103,14 @@ export class TrendsDataService {
     return { features, labels };
   }
 
+  preprocessRealTimeTrend(trend: any): number[] {
+    // Extract numeric values from sparkline
+    const sparklineValues = trend.sparkline.match(/\d+/g).map(Number);
+    // Assuming that the sparklineValues have two elements, create a 2D array for the features
+    const features = [sparklineValues];
+    return features;
+  }
+
   constructPath(name: string, type: string, dir: string) {
     const fileName = name + type;
     const currentDirectory = process.cwd();
@@ -136,4 +144,5 @@ export class TrendsDataService {
       return null;
     }
   }
+
 }

@@ -21,7 +21,9 @@ export class AppController {
     const searchTrends =
       await this.googleTrendsService.getSearchTrendsViePuppeteer();
     const realTimeTrendsData = await this.predictionsService.findAll();
+    const possibleMajorTrends =
+      await this.predictionsService.findPossibleMajorTrends(realTimeTrendsData);
     this.googleTrendsService.processData(realTimeTrendsData, searchTrends);
-    return 'Data processing started.';
+    return possibleMajorTrends;
   }
 }

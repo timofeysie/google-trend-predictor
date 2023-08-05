@@ -1,20 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PredictionsController } from './predictions.controller';
-import { PredictionsService } from './predictions.service';
+import { PredictionsServiceMock as PredictionsService } from './predictions.service.mock';
 
 describe('PredictionsController', () => {
-  let controller: PredictionsController;
+  let predictionsController: PredictionsController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const app: TestingModule = await Test.createTestingModule({
       controllers: [PredictionsController],
       providers: [PredictionsService],
     }).compile();
 
-    controller = module.get<PredictionsController>(PredictionsController);
+    predictionsController = app.get<PredictionsController>(
+      PredictionsController,
+    );
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('should be defined', () => {
+    it('should be defined', () => {
+      expect(predictionsController).toBeDefined();
+    });
   });
 });

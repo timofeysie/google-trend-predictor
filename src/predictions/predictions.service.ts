@@ -49,6 +49,16 @@ export class PredictionsService {
     });
   }
 
+  async findPossibleMajorTrends(realTimeTrendsData) {
+    const possibleMajorTrends = [];
+    realTimeTrendsData.forEach((realTimeTrend) => {
+      const result =
+        this.trendsDataService.preprocessRealTimeTrend(realTimeTrend);
+      console.log('result', result);
+    });
+    return possibleMajorTrends;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} prediction`;
   }

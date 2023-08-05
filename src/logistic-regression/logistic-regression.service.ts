@@ -7,13 +7,23 @@ export class LogisticRegressionService {
   private model: tf.Sequential;
 
   constructor(private readonly trendsDataService: TrendsDataService) {
-    this.model = tf.sequential();
-    this.model.add(
-      tf.layers.dense({ units: 1, inputShape: [2], activation: 'sigmoid' }),
-    );
-    const learningRate = 0.1;
-    const optimizer = tf.train.sgd(learningRate);
-    this.model.compile({ optimizer, loss: 'binaryCrossentropy' });
+    this.loadModelAndInitialize();
+  }
+
+  async loadModelAndInitialize(): Promise<void> {
+    const loadedModel = await this.trendsDataService.loadModel();
+    // If the loaded model is not null and is of type tf.Sequential, use it. Otherwise, create a new model.
+    if (loadedModel instanceof tf.Sequential) {
+      this.model = loadedModel;
+    } else {
+      this.model = tf.sequential();
+      this.model.add(
+        tf.layers.dense({ units: 1, inputShape: [2], activation: 'sigmoid' }),
+      );
+      const learningRate = 0.1;
+      const optimizer = tf.train.sgd(learningRate);
+      this.model.compile({ optimizer, loss: 'binaryCrossentropy' });
+    }
   }
 
   async train(trainData: number[][], trainLabels: number[]): Promise<void> {

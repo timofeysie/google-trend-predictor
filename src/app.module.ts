@@ -5,11 +5,10 @@ import { PredictionsModule } from './predictions/predictions.module';
 import { GoogleTrendsService } from './predictions/google-trends.service';
 import { PredictionsService } from './predictions/predictions.service';
 import { LogisticRegressionService } from './logistic-regression/logistic-regression.service';
-import { LogisticRegressionController } from './logistic-regression/logistic-regression.controller';
 
 @Module({
   imports: [PredictionsModule],
-  controllers: [AppController, LogisticRegressionController],
+  controllers: [AppController],
   providers: [
     AppService,
     GoogleTrendsService,

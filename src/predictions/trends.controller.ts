@@ -15,6 +15,10 @@ export class TrendsController {
   async getRealTimeTrends(): Promise<any> {
     const results = await this.googleTrendsService.getRealTimeTrends();
 
+    results.forEach((result) => {
+      console.log('result', result);
+    })
+
     // Preprocess the results and extract relevant data for prediction
     const xTrain: number[] = [];
     const yTrain: number[] = [];
