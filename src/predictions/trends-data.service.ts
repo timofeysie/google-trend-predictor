@@ -2,19 +2,18 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as tf from '@tensorflow/tfjs';
 
 @Injectable()
 export class TrendsDataService {
   saveTrendsDataToJson(data: any): void {
     const usWestCoastDate = this.getUsWestCoastDate();
-      const usWestCoastDateWithoutTime = usWestCoastDate
-        .toISOString()
-        .split('T')[0];
+    const usWestCoastDateWithoutTime = usWestCoastDate
+      .toISOString()
+      .split('T')[0];
     const fileName = `trends_data_${usWestCoastDateWithoutTime}.json`;
-    const currentDirectory = process.cwd();
-    const dataPath = path.join(currentDirectory, "data");
-    const filePath = path.join(dataPath, fileName);
-// console.log('writing data', data);
+    const filePath = this.constructPath(fileName, '.json', 'data');
+    console.log('saveTrendsDataToJson: writing to filePath', filePath);
     try {
       fs.writeFileSync(filePath, JSON.stringify(data));
       console.log(`Trends data saved to ${filePath} using US WestCoastDate`);
@@ -24,10 +23,11 @@ export class TrendsDataService {
   }
 
   saveTrendsDataToJsonWithFilename(data: any, fileName: string): void {
-    const currentDirectory = process.cwd();
-    const dataPath = path.join(currentDirectory, "data");
-    const filePath = path.join(dataPath, fileName);
-// console.log('writing data', data);
+    const filePath = this.constructPath(fileName, '.json', 'data');
+    console.log(
+      'saveTrendsDataToJsonWithFilename: writing to filePath',
+      filePath,
+    );
     try {
       fs.writeFileSync(filePath, JSON.stringify(data));
       console.log(`Trends data saved to ${filePath} using US WestCoastDate`);
@@ -60,23 +60,28 @@ export class TrendsDataService {
     return usWestCoastDate;
   }
 
-  preprocessData(dataset: any[]): { features: number[][], labels: number[] } {
+  preprocessData(dataset: any[]): { features: number[][]; labels: number[] } {
     const features: number[][] = [];
     const labels: number[] = [];
     for (const dataItem of dataset) {
       // use the "isMajorTrend" property as the label (0 or 1)
       const label = dataItem.isMajorTrend ? 1 : 0;
       // extract numeric values from sparkline
-      const sparklineValues = dataItem.sparkline.match(/\d+/g).map(Number);
+      const sparklineValues = dataItem.sparkline
+        .match(/\d+/g)
+        .slice(0, 2) // Use only the first two values as features
+        .map(Number);
       features.push(sparklineValues);
       labels.push(label);
     }
-    console.log('features', features)
-    console.log('labels', labels)
+    console.log('features', features.length);
+    console.log('labels', labels.length);
     return { features, labels };
   }
 
-  async loadAllDataAndPreprocess(directoryPath: string): Promise<{ features: number[][], labels: number[] }> {
+  async loadAllDataAndPreprocess(
+    directoryPath: string,
+  ): Promise<{ features: number[][]; labels: number[] }> {
     const allData: any[] = [];
 
     try {
@@ -98,4 +103,37 @@ export class TrendsDataService {
     return { features, labels };
   }
 
+  constructPath(name: string, type: string, dir: string) {
+    const fileName = name + type;
+    const currentDirectory = process.cwd();
+    const dataPath = path.join(currentDirectory, dir);
+    const filePath = path.join(dataPath, fileName);
+    return filePath;
+  }
+
+  async saveModel(model: tf.Sequential): Promise<void> {
+    const modelPath = this.constructPath('test-model', '.json', 'models');
+    console.log('using', modelPath);
+    try {
+      const modelJSON = model.toJSON();
+      const modelData = JSON.stringify(modelJSON);
+      await fs.promises.writeFile(modelPath, modelData);
+      console.log(`Model saved to ${modelPath}`);
+    } catch (err) {
+      console.error('Error while saving the model:', err);
+    }
+  }
+
+  async loadModel(): Promise<tf.LayersModel | null> {
+    const modelPath = this.constructPath('test-model', '.json', 'models');
+    try {
+      const modelData = fs.readFileSync(modelPath, 'utf8');
+      const modelJSON = JSON.parse(modelData);
+      console.log(`Model loaded from ${modelPath}`);
+      return await tf.loadLayersModel(modelJSON);
+    } catch (err) {
+      console.error('Error while loading the model:', err);
+      return null;
+    }
+  }
 }

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as tf from '@tensorflow/tfjs';
+import { TrendsDataService } from '../predictions/trends-data.service';
 
 @Injectable()
 export class LogisticRegressionService {
   private model: tf.Sequential;
 
-  constructor() {
+  constructor(private readonly trendsDataService: TrendsDataService) {
     this.model = tf.sequential();
     this.model.add(
       tf.layers.dense({ units: 1, inputShape: [2], activation: 'sigmoid' }),
@@ -19,6 +20,7 @@ export class LogisticRegressionService {
     const xs = tf.tensor2d(trainData);
     const ys = tf.tensor1d(trainLabels);
     await this.model.fit(xs, ys, { epochs: 100 });
+    await this.trendsDataService.saveModel(this.model);
   }
 
   predict(features: number[][]): number[] {
