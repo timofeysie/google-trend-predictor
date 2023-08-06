@@ -193,6 +193,10 @@ This fixes the issue:
       const savedData = fs.readFileSync(filePath, 'utf8');
 ```
 
-Later, when we save the file, we use the util to construct the path, which should be used by all places.
+Later, when we save the file inside the trendsDataService.saveTrendsDataToJsonWithFilename we use the util to construct the path, which should be used by all places:
 
-Worth committing the working code first.
+```js
+const filePath = this.constructPath(fileName, '.json', 'data');
+```
+
+Lets use that in the src\predictions\predictions.controller.ts also.

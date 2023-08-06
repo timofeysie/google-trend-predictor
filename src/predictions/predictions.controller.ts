@@ -66,13 +66,12 @@ export class PredictionsController {
       const yesterdayDateWithoutTime = yesterdayDate
         .toISOString()
         .split('T')[0];
-      const currentDirectory = process.cwd();
-      const dataPath = path.join(currentDirectory, 'data');
       const fileName = `trends_data_${yesterdayDateWithoutTime}`;
-      const fileNameWithExt = `trends_data_${yesterdayDateWithoutTime}.json`;
-
-      const filePath = path.join(dataPath, fileNameWithExt);
-
+      const filePath = this.trendsDataService.constructPath(
+        fileName,
+        '.json',
+        'data',
+      );
       const savedData = fs.readFileSync(filePath, 'utf8');
       console.log('loaded US West Coast Yesterday Date data', fileName);
       const parsedSavedData = JSON.parse(savedData);
