@@ -16,7 +16,6 @@ import * as path from 'path';
 
 @Controller('predictions')
 export class PredictionsController {
-  // private readonly trendPredictor: TrendPredictor;
   constructor(
     private readonly predictionsService: PredictionsService,
     private readonly trendsDataService: TrendsDataService,
@@ -29,6 +28,7 @@ export class PredictionsController {
 
   @Get()
   async findAll() {
+    console.log('/predictions API called');
     const googleTrendsData = await this.predictionsService.findAll();
     const processedTrendsData = await this.compareDailyAndRealtimeTrendsData(
       googleTrendsData,
@@ -68,8 +68,10 @@ export class PredictionsController {
         .split('T')[0];
       const currentDirectory = process.cwd();
       const dataPath = path.join(currentDirectory, 'data');
-      const fileName = `trends_data_${yesterdayDateWithoutTime}.json`;
-      const filePath = path.join(dataPath, fileName);
+      const fileName = `trends_data_${yesterdayDateWithoutTime}`;
+      const fileNameWithExt = `trends_data_${yesterdayDateWithoutTime}.json`;
+
+      const filePath = path.join(dataPath, fileNameWithExt);
 
       const savedData = fs.readFileSync(filePath, 'utf8');
       console.log('loaded US West Coast Yesterday Date data', fileName);

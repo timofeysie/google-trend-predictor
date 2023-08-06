@@ -66,3 +66,7 @@ Error: input expected a batch of elements where each example has shape [2] (i.e.
     at new ValueError (C:\Users\timof\repos\node\google-trend-predictor\node_modules\@tensorflow\tfjs\tfjs-layers\src\errors.ts:48:5)
     at standardizeInputData (C:\Users\timof\repos\node\google-trend-predictor\node_modules\@tensorflow\tfjs\tfjs-layers\src\engine\training.ts:170:17)
 ```
+
+## Real-time trends
+
+We want to get the Real-time trends at a certain interval.  The add them to a file of that date without too much duplication.

@@ -11,7 +11,7 @@ export class TrendsDataService {
     const usWestCoastDateWithoutTime = usWestCoastDate
       .toISOString()
       .split('T')[0];
-    const fileName = `trends_data_${usWestCoastDateWithoutTime}.json`;
+    const fileName = `trends_data_${usWestCoastDateWithoutTime}`;
     const filePath = this.constructPath(fileName, '.json', 'data');
     console.log('1 saveTrendsDataToJson: writing to filePath', filePath);
     try {
@@ -104,10 +104,17 @@ export class TrendsDataService {
   }
 
   preprocessRealTimeTrend(trend: any): number[] {
-    // Extract numeric values from sparkline
-    const sparklineValues = trend.sparkline.match(/\d+/g).map(Number);
-    // Assuming that the sparklineValues have two elements, create a 2D array for the features
-    const features = [sparklineValues];
+    let features = [];
+    try {
+      // Extract numeric values from sparkline
+      const sparklineValues = trend.sparkline.match(/\d+/g).map(Number);
+      // Assuming that the sparklineValues have two elements, create a 2D array for the features
+      features = [sparklineValues];
+    } catch (err) {
+      console.log('preprocessRealTimeTrend =====')
+      console.log('err', err);
+      console.log('for trend', trend);
+    }
     return features;
   }
 

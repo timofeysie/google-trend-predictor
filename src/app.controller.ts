@@ -17,13 +17,13 @@ export class AppController {
 
   @Get('/process-data')
   async processData(): Promise<any> {
-    // Replace 'data' with the actual JSON data you receive from the real-time trends API
-    const searchTrends =
+    // Get real-time trends using puppeteer and cheerio
+    const realTimeTrends =
       await this.googleTrendsService.getSearchTrendsViePuppeteer();
-    const realTimeTrendsData = await this.predictionsService.findAll();
+    // const dailyTrendsData = await this.predictionsService.findAll();
     const possibleMajorTrends =
-      await this.predictionsService.findPossibleMajorTrends(realTimeTrendsData);
-    this.googleTrendsService.processData(realTimeTrendsData, searchTrends);
+      await this.predictionsService.findPossibleMajorTrends(realTimeTrends);
+    this.googleTrendsService.processData(realTimeTrends);
     return possibleMajorTrends;
   }
 }

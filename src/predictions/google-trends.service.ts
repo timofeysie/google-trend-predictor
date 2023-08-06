@@ -39,10 +39,10 @@ export class GoogleTrendsService {
 
   /**
    * Perform data collection and preprocessing.
-   * @param realTimeTrendsData
+   * @param dailyTrendsData
    * @param realTimeTrendsPageData
    */
-  processData(realTimeTrendsData: any, realTimeTrendsPageData: any): void {
+  processData(realTimeTrendsPageData: any): void {
     console.log('realTimeTrendsPageData', realTimeTrendsPageData.length);
     // Process real-time trends data
     const parsedRealTimeTrendsData = this.parseRealTimeTrendsWitCheerio(
@@ -53,23 +53,23 @@ export class GoogleTrendsService {
       this.trendsDataService.saveTrendsDataToJson(parsedRealTimeTrendsData);
     }
 
-    const trendingStories = realTimeTrendsData.storySummaries?.trendingStories;
+    // const trendingStories = dailyTrendsData.storySummaries?.trendingStories;
 
-    if (trendingStories) {
-      const trendingEntities = trendingStories.map((story) =>
-        story.entityNames.join(', '),
-      );
-      const trendingTitles = trendingStories.map((story) => story.title);
-      const trendingUrls = trendingStories.map((story) => story.shareUrl);
+    // if (trendingStories) {
+    //   const trendingEntities = trendingStories.map((story) =>
+    //     story.entityNames.join(', '),
+    //   );
+    //   const trendingTitles = trendingStories.map((story) => story.title);
+    //   const trendingUrls = trendingStories.map((story) => story.shareUrl);
 
-      // For example, you can filter stories that contain certain keywords
-      const keywordToFilter = 'quantum';
-      const filteredTrendingStories = trendingStories.filter(
-        (story) =>
-          story.title.toLowerCase().includes(keywordToFilter) ||
-          story.entityNames.includes(keywordToFilter),
-      );
-    }
+    //   // For example, you can filter stories that contain certain keywords
+    //   const keywordToFilter = 'quantum';
+    //   const filteredTrendingStories = trendingStories.filter(
+    //     (story) =>
+    //       story.title.toLowerCase().includes(keywordToFilter) ||
+    //       story.entityNames.includes(keywordToFilter),
+    //   );
+    // }
 
     // Add data collection and preprocessing logic here
   }
