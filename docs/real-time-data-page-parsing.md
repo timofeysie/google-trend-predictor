@@ -224,3 +224,37 @@ Really, we should be using all available data to check the results against.
 So we open all data directory files, say for the past week, and check the daily trends for any day against all of them.
 
 Still a ways to go with this project!
+
+## Multiple calls a day
+
+Since the real-time trends are real-time, they get updated throughout the day.  It's possible to call this say every hour and get many different results.
+
+Some are the same, but some are new.  This will become an important feature, as we want to test them all against our model.
+
+We could:
+
+- keep adding new ones to the same file
+- combine objects with the same title in the single file
+- create new files each time we run the API
+
+I'm not sure what is the best appraoch.  Currently, we have two files for the same date.  With our existing setup, we kind of want to be able to load multiple real-time trend files and check them all agains the daily trend results.
+
+We already have a function to load all the files for training, so we can use that as a starting point to say load the last week of files.  It might be the case that a trend could take time to build steam.  In this case it would be great if we could predict that this was about to happen.
+
+Originally, we save the file with the full date and time.  Then when we realized that the files weren't saving because the ":" character in the time string is not an allowed character for file names.
+
+But then it complicates saving the files again.  Currently where the file is loaded and the file is saved is in different parts of the app, just using the same date function.  Maybe we should just add the new real-time search results to the same file each time.
+
+Now we have an issue like this:
+
+```log
+realTimeTrendsData 2909965
+realTimeTrendsData err TypeError: realTimeTrendsData.forEach is not a function
+    at PredictionsService.findPossibleMajorTrends (C:\Users\timof\repos\node\google-trend-predictor\src\predictions\predictions.service.ts:56:26)
+    at AppController.processData (C:\Users\timof\repos\node\google-trend-predictor\src\app.controller.ts:27:39)
+    at C:\Users\timof\repos\node\google-trend-predictor\node_modules\@nestjs\core\router\router-execution-context.js:46:28
+    at C:\Users\timof\repos\node\google-trend-predictor\node_modules\@nestjs\core\router\router-proxy.js:9:17
+realTimeTrendsPageData 2909965
+```
+
+At least with the try catch block we can write out file.

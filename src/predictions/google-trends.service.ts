@@ -125,6 +125,7 @@ export class GoogleTrendsService {
       console.error('Error while scraping:', err);
       return '';
     } finally {
+      console.log('awaiting browser close');
       await browser.close();
     }
   }

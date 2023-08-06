@@ -20,10 +20,13 @@ export class AppController {
     // Get real-time trends using puppeteer and cheerio
     const realTimeTrends =
       await this.googleTrendsService.getSearchTrendsViePuppeteer();
+    console.log('realTimeTrends', realTimeTrends.length);
     // const dailyTrendsData = await this.predictionsService.findAll();
-    const possibleMajorTrends =
-      await this.predictionsService.findPossibleMajorTrends(realTimeTrends);
-    this.googleTrendsService.processData(realTimeTrends);
-    return possibleMajorTrends;
+    if (realTimeTrends) {
+      const possibleMajorTrends =
+        await this.predictionsService.findPossibleMajorTrends(realTimeTrends);
+      this.googleTrendsService.processData(realTimeTrends);
+      return possibleMajorTrends;
+    }
   }
 }

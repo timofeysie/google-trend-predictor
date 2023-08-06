@@ -50,13 +50,18 @@ export class PredictionsService {
   }
 
   async findPossibleMajorTrends(realTimeTrendsData) {
+    console.log('realTimeTrendsData', realTimeTrendsData.length);
     const possibleMajorTrends = [];
-    realTimeTrendsData.forEach((realTimeTrend) => {
-      const result =
-        this.trendsDataService.preprocessRealTimeTrend(realTimeTrend);
-      console.log('result', result);
-    });
-    return possibleMajorTrends;
+    try {
+      realTimeTrendsData.forEach((realTimeTrend) => {
+        const result =
+          this.trendsDataService.preprocessRealTimeTrend(realTimeTrend);
+        console.log('result', result);
+        return possibleMajorTrends;
+      });
+    } catch (err) {
+      console.log('realTimeTrendsData err', err);
+    }
   }
 
   findOne(id: number) {
