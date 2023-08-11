@@ -87,7 +87,10 @@ export class PredictionsController {
           savedTrend.isMajorTrend = true;
         } else {
           // If the title is not found in googleTrendsData, set isMajorTrend to false
-          savedTrend.isMajorTrend = false;
+          // only if the trend has not already been marked as major
+          if (!savedTrend.isMajorTrend) {
+            savedTrend.isMajorTrend = false;
+          }
         }
         if (savedTrend.isMajorTrend) {
           console.log(

@@ -1,6 +1,14 @@
 # Training data
 
-## split the data
+Initially the project was begun with the goal of training a Decision Tree Classifier.
+
+However, when the data set able to be captured were considered, it was decided that Logistic-regression or a Random Forest model would be better suited.
+
+## Decision tree classifier notes
+
+Here are the notes from the beginning of the project.
+
+### split the data
 
 Training Set: The training set is the largest portion of your data and is used to train the machine learning model. It helps the model learn the underlying patterns and trends in the data. Generally, it contains the majority of the data. For example, you can use 70% of your data for training.
 
@@ -18,7 +26,7 @@ Stratified sampling (optional): If your data is imbalanced (some classes are muc
 
 Once you have split your data into the training, validation, and test sets, you can use them to train your TensorFlow model, tune its hyperparameters using the validation set, and evaluate its final performance on the test set before deployment.
 
-## How much data is needed?
+### How much data is needed?
 
 Minimum Number of Search Trends: at least 1,000 to 2,000 search trends.
 
@@ -30,7 +38,7 @@ Adding real-time data I can see today, that Google has published 163 search tren
 
 At this rate, we can reach 1000 data sets in about a week, and 20000 in about two weeks.
 
-## maximize the effectiveness of the model
+### maximize the effectiveness of the model
 
 Data Quality: Ensure the data the collect is clean, accurate, and properly labeled. Low-quality data can lead to poor model performance.
 
@@ -44,7 +52,7 @@ Iterate and Improve: Use the insights gained from the MVP model to iterate and i
 
 Remember that the MVP model is just the beginning, and achieving high accuracy for predicting rare events or extremely high search volumes like 500,000 may require additional data and more sophisticated modeling techniques. As the gather more data and validate the approach, we can gradually enhance the model's capabilities and achieve our goal more effectively.
 
-## Decision Tree Cons
+### Decision Tree Cons
 
 Sensitive to noisy data. It can overfit noisy data.
 
@@ -52,7 +60,7 @@ The small variation(or variance) in data can result in the different decision tr
 
 Decision trees are biased with imbalance dataset, so it is recommended that balance out the dataset before creating the decision tree.
 
-## The dataset
+### The dataset
 
 The current proposed data set will be the following:
 
@@ -90,3 +98,7 @@ Model Evaluation: Decide on appropriate evaluation metrics to assess the perform
 Model Interpretability: Decision trees are inherently interpretable models, making it easier to understand and interpret their predictions.
 
 The suitability of using this data for training a Decision Tree Classifier model depends on the factors mentioned above. Before proceeding with training, it's essential to preprocess the data, split it into training and testing sets, and carefully evaluate the model's performance to ensure it meets our requirements for the specific classification task.
+
+## Possible flaws in the dataset
+
+I'm worried that trends that went on to become major trends, but were not marked as such, could compromise the model training data.
