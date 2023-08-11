@@ -29,9 +29,9 @@ export class PredictionsController {
   @Get()
   async findAll() {
     console.log('/predictions API called');
-    const googleTrendsData = await this.predictionsService.findAll();
+    const googleTrendsDailyData = await this.predictionsService.findAll();
     const processedTrendsData = await this.compareDailyAndRealtimeTrendsData(
-      googleTrendsData,
+      googleTrendsDailyData,
     );
     // // Preprocess the results and extract relevant data for prediction
     // const xTrain: number[] = [];
@@ -99,6 +99,17 @@ export class PredictionsController {
         }
         // console.log('savedTrend', savedTrend);
       }
+
+      // Save the daily trend list for future reference
+      const uSWCDate = this.trendsDataService.getUsWestCoastDate();
+      const usWestCoastDateWithoutTime = uSWCDate.toISOString().split('T')[0];
+      const dailyTrendFileName = `daily_trends_${usWestCoastDateWithoutTime}`;
+      this.trendsDataService.saveFileWithFilenameExtensionAndDir(
+        googleDailyTrendsData,
+        dailyTrendFileName,
+        '.json',
+        'daily',
+      );
 
       this.trendsDataService.saveTrendsDataToJsonWithFilename(
         parsedSavedData,

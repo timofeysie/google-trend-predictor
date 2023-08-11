@@ -36,6 +36,20 @@ export class TrendsDataService {
     }
   }
 
+  saveFileWithFilenameExtensionAndDir(data: any, fileName: string, extension: string, directory: string): void {
+    const filePath = this.constructPath(fileName, extension, directory);
+    console.log(
+      '2 saveTrendsDataToJsonWithFilename: writing to filePath',
+      filePath,
+    );
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(data));
+      console.log(`Trends data saved to ${filePath} using US WestCoastDate`);
+    } catch (err) {
+      console.error('Error while saving trends data:', err);
+    }
+  }
+
   getUsWestCoastYesterdayDate(): Date {
     const usWestCoastTimezone = 'America/Los_Angeles';
     const currentDate = new Date();
