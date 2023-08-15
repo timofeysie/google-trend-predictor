@@ -155,10 +155,13 @@ export class TrendsDataService {
 
   async loadModel(): Promise<tf.LayersModel | null> {
     const modelPath = this.constructPath('test-model', '.json', 'models');
+    // the above worked one, then gave an error: Only absolute URLs are supported
+
+    const absolutePath = 'C:/Users/timof/repos/node/google-trend-predictor/models/test-model.json';
     try {
-      const modelData = fs.readFileSync(modelPath, 'utf8');
+      const modelData = fs.readFileSync(absolutePath, 'utf8');
       const modelJSON = JSON.parse(modelData);
-      console.log(`Model loaded from ${modelPath}`);
+      console.log(`Model loaded from ${absolutePath}`);
       return await tf.loadLayersModel(modelJSON);
     } catch (err) {
       console.error('Error while loading the model:', err);
