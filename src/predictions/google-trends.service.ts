@@ -81,7 +81,6 @@ export class GoogleTrendsService {
       headless: false,
       executablePath: path_to_your_chrome_executable,
     });
-    console.log('puppeteer launched');
 
     try {
       const page = await browser.newPage();

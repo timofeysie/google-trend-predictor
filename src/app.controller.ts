@@ -17,6 +17,7 @@ export class AppController {
 
   @Get('/process-data')
   async processData(): Promise<any> {
+    console.log('=== /process-data API called');
     // Get real-time trends using puppeteer and cheerio
     const realTimeTrends =
       await this.googleTrendsService.getSearchTrendsViePuppeteer();

@@ -28,7 +28,7 @@ export class PredictionsController {
 
   @Get()
   async findAll() {
-    console.log('/predictions API called');
+    console.log('=== /predictions API called');
     const googleTrendsDailyData = await this.predictionsService.findAll();
     const processedTrendsData = await this.compareDailyAndRealtimeTrendsData(
       googleTrendsDailyData,

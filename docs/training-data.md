@@ -102,3 +102,41 @@ The suitability of using this data for training a Decision Tree Classifier model
 ## Possible flaws in the dataset
 
 I'm worried that trends that went on to become major trends, but were not marked as such, could compromise the model training data.
+
+
+Ezekiel Elliott
+
+data\trends_data_2023-08-05.json
+
+  {
+    "title": "Ezekiel Elliott",
+    "titles": [
+      "Ezekiel Elliott",
+      "New England Patriots",
+      "Running back",
+      "Dallas Cowboys",
+      "NFL",
+      "Bill Belichick"
+    ],
+    "sparkline": "M0,71L8.695652173913043,71L17.391304347826086,67L26.08695652173913,69L34.78260869565217,68L43.47826086956522,72L52.17391304347826,69L60.86956521739131,74L69.56521739130434,76L78.26086956521739,76L86.95652173913044,71L95.65217391304348,75L104.34782608695652,73L113.04347826086956,76L121.73913043478262,76L130.43478260869566,79L139.1304347826087,72L147.82608695652172,72L156.52173913043478,72L165.2173913043478,65L173.91304347826087,69L182.6086956521739,35L191.30434782608697,7L200,0",
+    "trendSearchUrl": "https://www.si.com/nfl/cowboys/news/dallas-cowboys-visit-ezekiel-ezekiel-sign-new-england-patriots-no-deal-why-dalvin-cook",
+    "isMajorTrend": false
+  },
+
+Appears 10 days later in a daily trend.
+
+daily\daily_trends_2023-08-14.json
+
+ {
+    "title": {
+      "query": "Ezekiel Elliott",
+      "exploreLink": "/trends/explore?q=Ezekiel+Elliott&date=now+7-d&geo=US"
+    },
+    "formattedTraffic": "200K+",
+    "relatedQueries": [
+      {
+        "query": "Patriots",
+        "exploreLink": "/trends/explore?q=Patriots&date=now+7-d&geo=US"
+      }
+      ...
+
