@@ -4,16 +4,11 @@ import { AppService } from './app.service';
 import { PredictionsModule } from './predictions/predictions.module';
 import { GoogleTrendsService } from './predictions/google-trends.service';
 import { PredictionsService } from './predictions/predictions.service';
-import { LogisticRegressionService } from './logistic-regression/logistic-regression.service';
+import { LogisticRegressionModule } from './logistic-regression/logistic-regression.module';
 
 @Module({
-  imports: [PredictionsModule],
+  imports: [PredictionsModule, LogisticRegressionModule],
   controllers: [AppController],
-  providers: [
-    AppService,
-    GoogleTrendsService,
-    PredictionsService,
-    LogisticRegressionService,
-  ],
+  providers: [AppService, GoogleTrendsService, PredictionsService],
 })
 export class AppModule {}

@@ -36,7 +36,12 @@ export class TrendsDataService {
     }
   }
 
-  saveFileWithFilenameExtensionAndDir(data: any, fileName: string, extension: string, directory: string): void {
+  saveFileWithFilenameExtensionAndDir(
+    data: any,
+    fileName: string,
+    extension: string,
+    directory: string,
+  ): void {
     const filePath = this.constructPath(fileName, extension, directory);
     console.log(
       '2 saveTrendsDataToJsonWithFilename: writing to filePath',
@@ -78,15 +83,20 @@ export class TrendsDataService {
     const features: number[][] = [];
     const labels: number[] = [];
     for (const dataItem of dataset) {
-      // use the "isMajorTrend" property as the label (0 or 1)
-      const label = dataItem.isMajorTrend ? 1 : 0;
-      // extract numeric values from sparkline
-      const sparklineValues = dataItem.sparkline
-        .match(/\d+/g)
-        .slice(0, 2) // Use only the first two values as features
-        .map(Number);
-      features.push(sparklineValues);
-      labels.push(label);
+      if (
+        typeof dataItem?.isMajorTrend !== 'undefined' &&
+        dataItem?.isMajorTrend !== null
+      ) {
+        const label = dataItem.isMajorTrend ? 1 : 0;
+        if (
+          typeof dataItem?.sparkline !== 'undefined' &&
+          dataItem?.sparkline !== null
+        ) {
+          const sparklineValues = dataItem.sparkline.match(/\d+/g).map(Number); // Use all values from sparkline as features
+          features.push(sparklineValues);
+          labels.push(label);
+        }
+      }
     }
     console.log('features', features.length);
     console.log('labels', labels.length);
@@ -125,7 +135,7 @@ export class TrendsDataService {
       // Assuming that the sparklineValues have two elements, create a 2D array for the features
       features = [sparklineValues];
     } catch (err) {
-      console.log('preprocessRealTimeTrend =====')
+      console.log('preprocessRealTimeTrend =====');
       console.log('err', err);
       console.log('for trend', trend);
     }
@@ -157,7 +167,8 @@ export class TrendsDataService {
     const modelPath = this.constructPath('test-model', '.json', 'models');
     // the above worked one, then gave an error: Only absolute URLs are supported
 
-    const absolutePath = 'C:/Users/timof/repos/node/google-trend-predictor/models/test-model.json';
+    const absolutePath =
+      'C:/Users/timof/repos/node/google-trend-predictor/models/test-model.json';
     try {
       const modelData = fs.readFileSync(absolutePath, 'utf8');
       const modelJSON = JSON.parse(modelData);
@@ -168,5 +179,4 @@ export class TrendsDataService {
       return null;
     }
   }
-
 }
