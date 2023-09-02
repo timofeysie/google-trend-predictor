@@ -18,7 +18,7 @@ export class LogisticRegressionService {
     //} else {
     this.model = tf.sequential();
     this.model.add(
-      tf.layers.dense({ units: 1, inputShape: [2], activation: 'sigmoid' }),
+      tf.layers.dense({ units: 1, inputShape: [79], activation: 'sigmoid' }),
     );
     const learningRate = 0.1;
     const optimizer = tf.train.sgd(learningRate);

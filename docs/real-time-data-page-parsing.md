@@ -307,3 +307,4 @@ Just happened to see this one and wondered how big this issue is:
 - Create puppeteer function to click on suspected major trends and capture the details for post creation.
 - Fix the predictor error.
 - When a major trend is found during the puppeteer work, click on the open trend and capture the full details.
+- capture the "Past x" values.  Usually it's past 24 hours, but not always.
