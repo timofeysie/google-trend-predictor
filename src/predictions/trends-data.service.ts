@@ -130,14 +130,18 @@ export class TrendsDataService {
   preprocessRealTimeTrend(trend: any): number[] {
     let features = [];
     try {
-      // Extract numeric values from sparkline
-      const sparklineValues = trend.sparkline.match(/\d+/g).map(Number);
-      // Assuming that the sparklineValues have two elements, create a 2D array for the features
-      features = [sparklineValues];
+      if (trend?.sparkline) {
+        // Extract numeric values from sparkline
+        const sparklineValues = trend.sparkline.match(/\d+/g);
+        if (sparklineValues) {
+          features = [sparklineValues.map(Number)];
+        }
+      } else {
+        console.log('No sparkline data found for trend:', trend.title);
+      }
     } catch (err) {
-      console.log('preprocessRealTimeTrend =====');
-      console.log('err', err);
-      console.log('for trend', trend);
+      console.log('preprocessRealTimeTrend error:', err);
+      console.log('for trend:', trend);
     }
     return features;
   }
@@ -165,15 +169,13 @@ export class TrendsDataService {
 
   async loadModel(): Promise<tf.LayersModel | null> {
     const modelPath = this.constructPath('test-model', '.json', 'models');
-    // the above worked one, then gave an error: Only absolute URLs are supported
-
-    const absolutePath =
-      'C:/Users/timof/repos/node/google-trend-predictor/models/test-model.json';
     try {
-      const modelData = fs.readFileSync(absolutePath, 'utf8');
-      const modelJSON = JSON.parse(modelData);
-      console.log(`Model loaded from ${absolutePath}`);
-      return await tf.loadLayersModel(modelJSON);
+      // Convert the file path to a file URL
+      const modelUrl = `file://${modelPath}`;
+      // Load the model using the file URL
+      const model = await tf.loadLayersModel(modelUrl);
+      console.log(`Model loaded from ${modelPath}`);
+      return model;
     } catch (err) {
       console.error('Error while loading the model:', err);
       return null;
