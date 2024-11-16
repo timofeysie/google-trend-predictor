@@ -31,6 +31,8 @@ POST http://localhost:3000/logistic-regression/train <-- train the dataset from 
 
 POST http://localhost:3000/logistic-regression/predict <-- predict a major trend from the payload
 
+GET http://localhost:3000/parse-realtime-data returns JSON data containing all the trends and their details
+
 ## Real Time Trends
 
 We get the results of two data sources and merge then together for the model training data.

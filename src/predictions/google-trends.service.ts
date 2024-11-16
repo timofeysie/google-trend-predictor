@@ -98,6 +98,85 @@ export class GoogleTrendsService {
     }
   }
 
+  private analyzeTrendSparkline(sparklinePoints: string, title: string): { 
+    isRising: boolean, 
+    highestPoint: number,
+    lastPoint: number,
+    percentageFromPeak: number 
+  } {
+    const points = sparklinePoints.split(' ')
+      .filter(pair => pair.includes(','))
+      .map(pair => {
+        const [x, y] = pair.split(',');
+        return {
+          x: parseInt(x, 10),
+          y: parseInt(y, 10)
+        };
+      })
+      .filter(point => !isNaN(point.x) && !isNaN(point.y));
+
+    if (points.length < 2) return {
+      isRising: false,
+      highestPoint: 0,
+      lastPoint: 0,
+      percentageFromPeak: 0
+    };
+
+    const highestPoint = Math.min(...points.map(p => p.y));
+    const lastPoint = points[points.length - 1];
+    
+    // Look at the last 20% of points to determine trend direction
+    const recentPointsStartIndex = Math.floor(points.length * 0.8);
+    const recentPoints = points.slice(recentPointsStartIndex);
+    
+    // Calculate the average y value for recent points
+    const recentAverage = recentPoints.reduce((sum, p) => sum + p.y, 0) / recentPoints.length;
+    
+    // Calculate if the trend is stable or improving in recent points
+    const isStableOrImproving = recentPoints.every((point, index) => {
+      if (index === 0) return true;
+      const prevPoint = recentPoints[index - 1];
+      return point.y <= prevPoint.y + 2; // Allow small variations up to 2 units
+    });
+
+    // A trend is rising if:
+    // 1. The recent points are stable or improving
+    // 2. The last point is within 5% of the highest point
+    // 3. The recent average is close to the highest point
+    const percentageFromPeak = ((lastPoint.y - highestPoint) / Math.abs(highestPoint)) * 100;
+    const recentPercentageFromPeak = ((recentAverage - highestPoint) / Math.abs(highestPoint)) * 100;
+    
+    const isCloseToHigh = percentageFromPeak <= 5;
+    const isRecentCloseToHigh = recentPercentageFromPeak <= 7;
+    const isRising = isStableOrImproving && isCloseToHigh && isRecentCloseToHigh;
+
+    console.log(`\n=== Analyzing Trend: ${title} ===`);
+    console.log('Analysis:', {
+      pointsCount: points.length,
+      lowestY: highestPoint,
+      lastPointValue: lastPoint.y,
+      recentAverage: Math.round(recentAverage * 100) / 100,
+      percentageFromPeak: Math.round(percentageFromPeak * 100) / 100,
+      recentPercentageFromPeak: Math.round(recentPercentageFromPeak * 100) / 100,
+      isStableOrImproving,
+      isCloseToHigh,
+      isRecentCloseToHigh,
+      isRising
+    });
+
+    return {
+      isRising,
+      highestPoint,
+      lastPoint: lastPoint.y,
+      percentageFromPeak
+    };
+  }
+
+  private isTrendRelevant(sparklinePoints: string, title: string): boolean {
+    const analysis = this.analyzeTrendSparkline(sparklinePoints, title);
+    return analysis.isRising;
+  }
+
   async getSearchTrendsViePuppeteer(): Promise<any[]> {
     const browser = await puppeteer.launch({
       headless: false,
@@ -132,56 +211,99 @@ export class GoogleTrendsService {
 
       await page.waitForTimeout(5000);
 
-      const trends = [];
-      
-      // Get all trend rows
-      const rows = await page.$$('tr.enOdEe-wZVHld-xMbwt');
-      console.log(`Found ${rows.length} trend rows`);
-      
-      for (const row of rows) {
-        try {
-          // Get basic trend data
-          const basicData = await page.evaluate((rowEl) => {
-            const titleDiv = rowEl.querySelector('.mZ3RIc');
-            const volumeDiv = rowEl.querySelector('.lqv0Cb');
-            const timeDiv = rowEl.querySelector('.A7jE4');
-            const sparklinePath = rowEl.querySelector('svg polyline');
+      const trendsData = await page.evaluate(() => {
+        const trends: Array<{
+          title: string;
+          searchVolume: string;
+          timeAgo: string;
+          sparkline: string;
+          timestamp: string;
+        }> = [];
+        
+        const trendRows = document.querySelectorAll('tr.enOdEe-wZVHld-xMbwt');
+        
+        trendRows.forEach((row) => {
+          const titleDiv = row.querySelector('.mZ3RIc');
+          const title = titleDiv?.textContent?.trim() || '';
 
-            return {
-              title: titleDiv?.textContent?.trim() || '',
-              searchVolume: volumeDiv?.textContent?.trim() || '',
-              timeAgo: timeDiv?.textContent?.trim() || '',
-              sparkline: sparklinePath?.getAttribute('points') || '',
+          const volumeDiv = row.querySelector('.lqv0Cb');
+          const searchVolume = volumeDiv?.textContent?.trim() || '';
+
+          const timeDiv = row.querySelector('.A7jE4');
+          const timeAgo = timeDiv?.textContent?.trim() || '';
+
+          const sparklinePath = row.querySelector('svg polyline');
+          const sparkline = sparklinePath?.getAttribute('points') || '';
+
+          if (title) {
+            trends.push({
+              title,
+              searchVolume,
+              timeAgo,
+              sparkline,
               timestamp: new Date().toISOString()
-            };
-          }, row);
-
-          // Click the row to open detail panel
-          await row.click();
-          await page.waitForTimeout(1000);
-
-          // Extract the detail content
-          const details = await this.extractDetailPanelContent(page);
-
-          trends.push({
-            ...basicData,
-            details
-          });
-
-          // Close the detail panel if it's open
-          const closeButton = await page.$('.pYTkkf-Bz112c-LgbsSe[aria-label="Close"]');
-          if (closeButton) {
-            await closeButton.click();
-            await page.waitForTimeout(500);
+            });
           }
+        });
 
-        } catch (error) {
-          console.error('Error processing trend row:', error);
+        return trends;
+      });
+
+      const relevantTrends = [];
+      console.log('\nStarting trend analysis...');
+      
+      for (const trend of trendsData) {
+        if (this.isTrendRelevant(trend.sparkline, trend.title)) {
+          console.log(`\n✓ Including trend: ${trend.title}`);
+          try {
+            // Find all trend rows
+            const rows = await page.$$('tr.enOdEe-wZVHld-xMbwt');
+            
+            // Find the matching row by checking the title text
+            for (const row of rows) {
+              const rowTitle = await row.$eval('.mZ3RIc', el => el.textContent?.trim());
+              
+              if (rowTitle === trend.title) {
+                if (trend.title.toLowerCase() === 'netflix') {
+                  console.log('Found Netflix row, clicking...');
+                }
+                
+                await row.click();
+                await page.waitForTimeout(1000);
+
+                const details = await this.extractDetailPanelContent(page);
+                relevantTrends.push({
+                  ...trend,
+                  details,
+                  sparklineAnalysis: this.analyzeTrendSparkline(trend.sparkline, trend.title)
+                });
+
+                // Close the detail panel
+                const closeButton = await page.$('.pYTkkf-Bz112c-LgbsSe[aria-label="Close"]');
+                if (closeButton) {
+                  await closeButton.click();
+                  await page.waitForTimeout(500);
+                }
+                
+                break; // Found and processed the row, move to next trend
+              }
+            }
+          } catch (error) {
+            console.error(`Error processing trend: ${trend.title}`, error);
+          }
+        } else {
+          console.log(`✗ Excluding trend: ${trend.title}`);
         }
       }
 
-      console.log(`Processed ${trends.length} trending items with details`);
-      return trends;
+      console.log('\n=== Summary ===');
+      console.log(`Total trends found: ${trendsData.length}`);
+      console.log(`Relevant trends: ${relevantTrends.length}`);
+      if (relevantTrends.length > 0) {
+        console.log('Relevant trend titles:', relevantTrends.map(t => t.title).join(', '));
+      }
+
+      return relevantTrends;
 
     } catch (err) {
       console.error('Error while scraping:', err);
