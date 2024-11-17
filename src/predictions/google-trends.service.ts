@@ -122,53 +122,30 @@ export class GoogleTrendsService {
       percentageFromPeak: 0
     };
 
-    const highestPoint = Math.min(...points.map(p => p.y));
-    const lastPoint = points[points.length - 1];
+    // Find the peak (lowest y value)
+    const peakY = Math.min(...points.map(p => p.y));
+    const lastY = points[points.length - 1].y;
     
-    // Look at the last 20% of points to determine trend direction
-    const recentPointsStartIndex = Math.floor(points.length * 0.8);
-    const recentPoints = points.slice(recentPointsStartIndex);
+    // Calculate how much higher the last point is compared to the peak
+    // Note: Higher y-value means lower trend value
+    const percentageIncrease = ((lastY - peakY) / Math.abs(peakY)) * 100;
     
-    // Calculate the average y value for recent points
-    const recentAverage = recentPoints.reduce((sum, p) => sum + p.y, 0) / recentPoints.length;
-    
-    // Calculate if the trend is stable or improving in recent points
-    const isStableOrImproving = recentPoints.every((point, index) => {
-      if (index === 0) return true;
-      const prevPoint = recentPoints[index - 1];
-      return point.y <= prevPoint.y + 2; // Allow small variations up to 2 units
-    });
-
-    // A trend is rising if:
-    // 1. The recent points are stable or improving
-    // 2. The last point is within 5% of the highest point
-    // 3. The recent average is close to the highest point
-    const percentageFromPeak = ((lastPoint.y - highestPoint) / Math.abs(highestPoint)) * 100;
-    const recentPercentageFromPeak = ((recentAverage - highestPoint) / Math.abs(highestPoint)) * 100;
-    
-    const isCloseToHigh = percentageFromPeak <= 5;
-    const isRecentCloseToHigh = recentPercentageFromPeak <= 7;
-    const isRising = isStableOrImproving && isCloseToHigh && isRecentCloseToHigh;
+    // Only include if the last point hasn't increased by more than 5% from the peak
+    const isRising = percentageIncrease <= 5;
 
     console.log(`\n=== Analyzing Trend: ${title} ===`);
     console.log('Analysis:', {
-      pointsCount: points.length,
-      lowestY: highestPoint,
-      lastPointValue: lastPoint.y,
-      recentAverage: Math.round(recentAverage * 100) / 100,
-      percentageFromPeak: Math.round(percentageFromPeak * 100) / 100,
-      recentPercentageFromPeak: Math.round(recentPercentageFromPeak * 100) / 100,
-      isStableOrImproving,
-      isCloseToHigh,
-      isRecentCloseToHigh,
+      peakY,
+      lastY,
+      percentageIncrease: Math.round(percentageIncrease * 100) / 100,
       isRising
     });
 
     return {
       isRising,
-      highestPoint,
-      lastPoint: lastPoint.y,
-      percentageFromPeak
+      highestPoint: peakY,
+      lastPoint: lastY,
+      percentageFromPeak: percentageIncrease
     };
   }
 
