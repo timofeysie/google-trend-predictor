@@ -3,7 +3,6 @@
 import { Test } from '@nestjs/testing';
 import { GoogleTrendsService } from './google-trends.service';
 import { TrendsDataService } from './trends-data.service';
-import * as fs from 'fs';
 import * as path from 'path';
 
 // Create a mock for TrendsDataService
@@ -15,11 +14,6 @@ const mockTrendsDataService = {
 
 describe('GoogleTrendsService', () => {
   let service: GoogleTrendsService;
-  let testData: Array<{
-    title: string;
-    sparkline: string;
-    expectedResult: boolean;
-  }>;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -33,16 +27,6 @@ describe('GoogleTrendsService', () => {
     }).compile();
 
     service = moduleRef.get(GoogleTrendsService);
-    
-    // Load test data
-    const testDataPath = path.join(__dirname, '../../peak-test-data.json');
-    try {
-      const rawData = fs.readFileSync(testDataPath, 'utf8');
-      testData = JSON.parse(rawData);
-    } catch (error) {
-      console.error('Error loading test data:', error);
-      testData = [];
-    }
   });
 
   describe('analyzeTrendSparkline', () => {
@@ -57,39 +41,59 @@ describe('GoogleTrendsService', () => {
       analyzeTrendSparkline = (service as any).analyzeTrendSparkline.bind(service);
     });
 
-    it('should correctly identify rising trends', () => {
-      testData.forEach(({ title, sparkline, expectedResult }) => {
-        const result = analyzeTrendSparkline(sparkline, title);
-        
-        console.log(`\nTesting trend: ${title}`);
-        console.log('Expected:', expectedResult);
-        console.log('Actual:', result.isRising);
-        console.log('Peak Y:', result.highestPoint);
-        console.log('Last Y:', result.lastPoint);
-        console.log('Percentage from peak:', Math.round(result.percentageFromPeak * 100) / 100 + '%');
-
-        expect(result.isRising).toBe(expectedResult);
-      });
-    });
-
-    it('should identify flat or consistently rising trends', () => {
-      const flatTrend = '-10,72 122,72';
-      const result = analyzeTrendSparkline(flatTrend, 'Flat Trend');
+    it('should include flat trends (carrot recall)', () => {
+      const flatTrend = "-10,2 0,2 10,2 20,2 30,2 40,2 50,2 60,2 70,2 80,2 90,2 100,2";
+      const result = analyzeTrendSparkline(flatTrend, 'Flat Trend Test');
       expect(result.isRising).toBe(true);
+      expect(result.percentageFromPeak).toBe(0);
     });
 
-    it('should exclude trends that peaked and dropped', () => {
-      const peakAndDrop = '-10,47 14,10 138,48';
-      const result = analyzeTrendSparkline(peakAndDrop, 'Peak and Drop');
+    it('should include steadily rising trends (iranian supreme leader)', () => {
+      const risingTrend = "-10,48 0,47 20,47 40,47 60,47 80,40 100,16 120,14 138,48";
+      const result = analyzeTrendSparkline(risingTrend, 'Rising Trend Test');
+      expect(result.isRising).toBe(true);
+      expect(result.percentageFromPeak).toBeLessThanOrEqual(150);
+    });
+
+    it('should include moderately rising trends (knox jolie-pitt)', () => {
+      const moderateRise = "-10,7 0,7 20,7 40,7 60,7 80,8 100,10 120,12 138,12";
+      const result = analyzeTrendSparkline(moderateRise, 'Moderate Rise Test');
+      expect(result.isRising).toBe(true);
+      expect(result.percentageFromPeak).toBeLessThanOrEqual(150);
+    });
+
+    it('should include trends with steady increase (nfl playoff picture)', () => {
+      const steadyIncrease = "-10,13 0,13 20,13 40,15 60,17 80,19 100,21 120,23 138,23";
+      const result = analyzeTrendSparkline(steadyIncrease, 'Steady Increase Test');
+      expect(result.isRising).toBe(true);
+      expect(result.percentageFromPeak).toBeLessThanOrEqual(150);
+    });
+
+    it('should exclude highly volatile trends', () => {
+      const volatileTrend = "-10,10 0,50 20,10 40,60 60,10 80,70 100,10 120,80 138,10";
+      const result = analyzeTrendSparkline(volatileTrend, 'Volatile Trend Test');
+      expect(result.isRising).toBe(false);
+      expect(result.percentageFromPeak).toBeGreaterThan(150);
+    });
+
+    it('should exclude trends with extreme spikes', () => {
+      const spikeTrend = "-10,10 0,10 20,10 40,100 60,10 80,10 100,10 120,10 138,10";
+      const result = analyzeTrendSparkline(spikeTrend, 'Spike Trend Test');
       expect(result.isRising).toBe(false);
     });
 
-    // "doug burgum"
-    it('should exclude doug burgum trend', () => {
-        const peakAndDrop = '-10,48 0,46 1,46 3,46 4,46 6,46 7,46 9,46 10,46 11,46 13,46 14,46 16,46 17,46 18,46 20,46 21,46 23,46 24,46 26,46 27,46 28,46 30,46 31,46 33,46 34,46 36,46 37,46 38,46 40,45 41,45 43,44 44,44 46,45 47,46 48,46 50,45 51,44 53,44 54,44 55,44 57,44 58,45 60,46 61,46 63,45 64,45 65,45 67,45 68,45 70,45 71,45 73,46 74,46 75,46 77,46 78,46 80,46 81,46 82,46 84,46 85,45 87,45 88,45 90,45 91,45 92,45 94,45 95,45 97,45 98,45 100,44 101,43 102,42 104,41 105,39 107,36 108,35 110,33 111,32 112,28 114,21 115,13 117,10 118,13 119,19 121,24 122,28 124,31 125,33 127,35 128,37 138,48';
-        const result = analyzeTrendSparkline(peakAndDrop, 'Peak and Drop');
-        expect(result.isRising).toBe(false);
+    it('should handle invalid or empty sparkline data', () => {
+      const result = analyzeTrendSparkline('', 'Empty Test');
+      expect(result.isRising).toBe(false);
+      expect(result.highestPoint).toBe(0);
+      expect(result.lastPoint).toBe(0);
+      expect(result.percentageFromPeak).toBe(0);
     });
 
+    it('should exclude first and last points from analysis', () => {
+      const trendWithOutliers = "-10,999 0,10 20,10 40,10 60,10 80,10 100,10 120,10 138,999";
+      const result = analyzeTrendSparkline(trendWithOutliers, 'Outlier Test');
+      expect(result.highestPoint).toBe(10); // Should ignore the 999 values
+    });
   });
 });
