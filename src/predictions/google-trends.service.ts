@@ -2,12 +2,17 @@
 import { Injectable } from '@nestjs/common';
 import * as googleTrends from 'google-trends-api';
 import config from '../../google-trends.config';
-import axios from 'axios';
-import cheerio from 'cheerio';
 import * as puppeteer from 'puppeteer';
-import * as fs from 'fs';
-import * as path from 'path';
 import { TrendsDataService } from './trends-data.service';
+
+interface TrendsParams {
+  geo?: string;
+  sort?: string;
+  hl?: string;
+  category?: string;
+  recency?: string;
+  hours?: number;
+}
 
 @Injectable()
 export class GoogleTrendsService {
@@ -180,7 +185,7 @@ export class GoogleTrendsService {
     return analysis.isRising;
   }
 
-  async getSearchTrendsViePuppeteer(): Promise<any[]> {
+  async getSearchTrendsViePuppeteer(params: TrendsParams = {}): Promise<any[]> {
     const browser = await puppeteer.launch({
       headless: false,
       executablePath:
@@ -190,6 +195,7 @@ export class GoogleTrendsService {
 
     try {
       page = await browser.newPage();
+      console.log('\n');
       console.log('puppeteer page ready');
 
       await page.setViewport({ width: 1280, height: 800 });
@@ -199,14 +205,14 @@ export class GoogleTrendsService {
 
       const realTimeTrendsUrl = [
         'https://trends.google.com/trends/trendingsearches/realtime?',
-        `geo=${config.geo}`,
-        `hl=${config.hl}`,
-        `category=${config.category}`,
-        'status=active',
+        `geo=${params.geo || config.geo}`,
+        `sort=${params.sort || config.recency}`,
+        `hl=${params.hl || config.hl}`,
+        `category=${params.category || config.category}`,
       ].join('&');
 
       await page.goto(realTimeTrendsUrl);
-      console.log('Waiting for content...');
+      console.log('Waiting for content for ', realTimeTrendsUrl);
 
       // Wait for the table rows to appear
       await page.waitForSelector('tr.enOdEe-wZVHld-xMbwt', {
@@ -218,15 +224,36 @@ export class GoogleTrendsService {
       const trendsData = await page.$$eval('tr[jsname="oKdM2c"]', (rows) => {
         return rows.map((row) => {
           const title = row.querySelector('.mZ3RIc')?.textContent || '';
-
-          // Get the polyline points from the SVG with the specific classes
+          
+          // Get the polyline points from the SVG
           const polyline = row.querySelector('polyline.sbIkwd.nSZy3e');
           const sparkline = polyline?.getAttribute('points') || '';
+
+          // Extract search volume (e.g. "1M+ searches")
+          const searchVolume = row.querySelector('.qNpYPd')?.textContent || '';
+          
+          // Extract trend status (e.g. "Active")
+          const trendStatus = row.querySelector('.QxIiwc.TUfb9d div')?.textContent || '';
+          
+          // Extract time info (e.g. "16 hrs ago") 
+          const timeAgo = row.querySelector('.A7jE4')?.textContent || '';
+
+          // Extract trend percentage if available
+          const trendPercentage = row.querySelector('.TXt85b')?.textContent || '';
+
+          // Extract breakdown terms
+          const breakdownTerms = Array.from(
+            row.querySelectorAll('.k36WW .mUIrbf-LgbsSe .mUIrbf-vQzf8d')
+          ).map((term: Element) => term.textContent || '');
 
           return {
             title,
             sparkline,
-            // ... other fields ...
+            searchVolume,
+            trendStatus,
+            timeAgo,
+            trendPercentage,
+            breakdownTerms
           };
         });
       });

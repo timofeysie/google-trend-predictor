@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GoogleTrendsService } from './predictions/google-trends.service';
 
@@ -20,9 +21,22 @@ export class AppController {
   }
 
   @Get('parse-realtime-data')
-  async parseRealTimeData() {
-    const trendsData =
-      await this.googleTrendsService.getSearchTrendsViePuppeteer();
+  async parseRealTimeData(
+    @Query('geo') geo?: string,
+    @Query('sort') sort?: string,
+    @Query('hl') hl?: string,
+    @Query('recency') recency?: string,
+    @Query('hours') hours?: number,
+    @Query('category') category?: string,
+  ) {
+    const trendsData = await this.googleTrendsService.getSearchTrendsViePuppeteer({
+      geo,
+      sort,
+      hl,
+      hours,
+      recency,
+      category,
+    });
     return {
       timestamp: new Date().toISOString(),
       data: trendsData,
