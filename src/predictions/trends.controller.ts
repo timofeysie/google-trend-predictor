@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GoogleTrendsService } from './google-trends.service';
 import { TrendPredictor } from './trend-predictor';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('trends')
+@UseGuards(JwtAuthGuard)
 export class TrendsController {
   private readonly trendPredictor: TrendPredictor;
 
