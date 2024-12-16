@@ -147,7 +147,6 @@ export class GoogleTrendsService {
       });
 
     if (points.length < 2) {
-
       return {
         isRising: false,
         highestPoint: 0,
@@ -169,7 +168,8 @@ export class GoogleTrendsService {
     // 2. OR it's steadily increasing (up to 150% from peak)
     // 3. AND the last point is not too high relative to the peak
     const isFlat = Math.abs(percentageFromPeak) <= 5;
-    const isSteadilyRising = percentageFromPeak > 0 && percentageFromPeak <= 150;
+    const isSteadilyRising =
+      percentageFromPeak > 0 && percentageFromPeak <= 150;
     const isRising = isFlat || isSteadilyRising;
 
     return {
@@ -187,9 +187,17 @@ export class GoogleTrendsService {
 
   async getSearchTrendsViePuppeteer(params: TrendsParams = {}): Promise<any[]> {
     const browser = await puppeteer.launch({
-      headless: false,
-      executablePath:
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu'
+      ],
+      executablePath: process.env.NODE_ENV === 'production' 
+        ? process.env.PUPPETEER_EXECUTABLE_PATH 
+        : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     });
     let page;
 
@@ -224,26 +232,28 @@ export class GoogleTrendsService {
       const trendsData = await page.$$eval('tr[jsname="oKdM2c"]', (rows) => {
         return rows.map((row) => {
           const title = row.querySelector('.mZ3RIc')?.textContent || '';
-          
+
           // Get the polyline points from the SVG
           const polyline = row.querySelector('polyline.sbIkwd.nSZy3e');
           const sparkline = polyline?.getAttribute('points') || '';
 
           // Extract search volume (e.g. "1M+ searches")
           const searchVolume = row.querySelector('.qNpYPd')?.textContent || '';
-          
+
           // Extract trend status (e.g. "Active")
-          const trendStatus = row.querySelector('.QxIiwc.TUfb9d div')?.textContent || '';
-          
-          // Extract time info (e.g. "16 hrs ago") 
+          const trendStatus =
+            row.querySelector('.QxIiwc.TUfb9d div')?.textContent || '';
+
+          // Extract time info (e.g. "16 hrs ago")
           const timeAgo = row.querySelector('.A7jE4')?.textContent || '';
 
           // Extract trend percentage if available
-          const trendPercentage = row.querySelector('.TXt85b')?.textContent || '';
+          const trendPercentage =
+            row.querySelector('.TXt85b')?.textContent || '';
 
           // Extract breakdown terms
           const breakdownTerms = Array.from(
-            row.querySelectorAll('.k36WW .mUIrbf-LgbsSe .mUIrbf-vQzf8d')
+            row.querySelectorAll('.k36WW .mUIrbf-LgbsSe .mUIrbf-vQzf8d'),
           ).map((term: Element) => term.textContent || '');
 
           return {
@@ -253,7 +263,7 @@ export class GoogleTrendsService {
             trendStatus,
             timeAgo,
             trendPercentage,
-            breakdownTerms
+            breakdownTerms,
           };
         });
       });
@@ -262,7 +272,6 @@ export class GoogleTrendsService {
       console.log('\nStarting trend analysis...');
 
       for (const trend of trendsData) {
-
         if (this.isTrendRelevant(trend.sparkline, trend.title)) {
           console.log(`Including trend: ${trend.title}`);
           try {
@@ -276,7 +285,6 @@ export class GoogleTrendsService {
               );
 
               if (rowTitle === trend.title) {
-
                 await row.click();
                 await page.waitForTimeout(1000);
 
@@ -309,10 +317,7 @@ export class GoogleTrendsService {
       }
 
       if (relevantTrends.length > 0) {
-        console.log(
-          'Relevant trend titles:',
-          relevantTrends.map((t) => t.title).join(', '),
-        );
+        console.log('Relevant trend :', relevantTrends.length);
       }
 
       return relevantTrends;
