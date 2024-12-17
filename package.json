@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "heroku-postbuild": "npm install --only=dev && npm run build"
   },
   "engines": {
     "node": "16.20.0",
@@ -28,14 +29,9 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
-    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@tensorflow/tfjs": "^4.10.0",
-    "@tensorflow/tfjs-converter": "^4.9.0",
-    "@tensorflow/tfjs-node": "^4.10.0",
     "axios": "^1.4.0",
-    "cheerio": "^1.0.0-rc.12",
-    "fs": "^0.0.1-security",
     "google-trends-api": "^4.9.2",
     "puppeteer": "^20.9.0",
     "reflect-metadata": "^0.1.13",
