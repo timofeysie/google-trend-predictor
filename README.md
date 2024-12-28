@@ -21,17 +21,17 @@ npm run test:cov
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-http://localhost:3000/process-data <-- parses the real-time trends and saves them to a file.
+http://localhost:3001/process-data <-- parses the real-time trends and saves them to a file.
 
-http://localhost:3000/predictions <-- loads daily trends and compares to the above
+http://localhost:3001/predictions <-- loads daily trends and compares to the above
 
-GET http://localhost:3000/logistic-regression <-- train the logistic regression model on data loaded from files
+GET http://localhost:3001/logistic-regression <-- train the logistic regression model on data loaded from files
 
-POST http://localhost:3000/logistic-regression/train <-- train the dataset from the payload body
+POST http://localhost:3001/logistic-regression/train <-- train the dataset from the payload body
 
-POST http://localhost:3000/logistic-regression/predict <-- predict a major trend from the payload
+POST http://localhost:3001/logistic-regression/predict <-- predict a major trend from the payload
 
-GET http://localhost:3000/parse-realtime-data returns JSON data containing all the trends and their details
+GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details
 
 ## Real Time Trends
 
