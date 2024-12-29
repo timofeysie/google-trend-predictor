@@ -17,6 +17,46 @@ npm run test:e2e
 npm run test:cov
 ```
 
+### Docker Workflow
+
+```sh
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker image 
+docker image prune -a
+docker build -t google-trend-predictor . --progress=plain
+docker run -p 3001:3001 google-trend-predictor
+```
+
+### Container Shutdown if Ctrl+C doesn't work, in a new terminal:
+
+```sh
+docker stop <container_name>
+```
+
+### Clean Up Before Rebuilding
+
+```sh
+# Remove stopped containers
+docker rm $(docker ps -a -q)
+
+# Remove unused images
+docker image prune -a
+
+# Or for a complete cleanup (including volumes and networks)
+docker system prune -a
+```
+
+### Rebuild and Run
+
+```sh
+# Build with no cache (when you've changed the Dockerfile)
+docker build --no-cache -t google-trend-predictor .
+
+# Run with proper shutdown signal handling
+docker run -p 3001:3001 --init google-trend-predictor
+```
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

@@ -4,11 +4,13 @@ import { UpdatePredictionDto } from './dto/update-prediction.dto';
 import * as googleTrends from 'google-trends-api';
 import config from '../../google-trends.config';
 import { TrendsDataService } from './trends-data.service';
+import puppeteer from 'puppeteer';
 
 @Injectable()
 export class PredictionsService {
   constructor(private readonly trendsDataService: TrendsDataService) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   create(createPredictionDto: CreatePredictionDto) {
     return 'This action adds a new prediction';
   }
@@ -68,11 +70,28 @@ export class PredictionsService {
     return `This action returns a #${id} prediction`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, updatePredictionDto: UpdatePredictionDto) {
     return `This action updates a #${id} prediction`;
   }
 
   remove(id: number) {
     return `This action removes a #${id} prediction`;
+  }
+
+  async getBrowser() {
+    console.log('getBrowser called');
+    const browser = await puppeteer.launch({
+      headless: 'new',
+      executablePath:
+        process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
+    });
+    return browser;
   }
 }

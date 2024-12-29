@@ -186,10 +186,16 @@ export class GoogleTrendsService {
   }
 
   async getSearchTrendsViePuppeteer(params: TrendsParams = {}): Promise<any[]> {
+    console.log('getSearchTrendsViePuppeteer called');
     const browser = await puppeteer.launch({
-      headless: false,
-      executablePath:
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      headless: "new",
+      executablePath: '/usr/bin/google-chrome',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
     });
     let page;
 
