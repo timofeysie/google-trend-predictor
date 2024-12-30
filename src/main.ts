@@ -8,13 +8,16 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'http://ec2-52-65-222-223.ap-southeast-2.compute.amazonaws.com:3001',
+      'https://dot-one-26b272efdbb8.herokuapp.com',
       process.env.FRONTEND_URL,
       process.env.DJANGO_API_URL,
     ].filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'Content-Type'],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   });
 
   await app.listen(3001);
