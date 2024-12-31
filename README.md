@@ -4,6 +4,29 @@
 
 # Google Trends Predictor
 
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+http://localhost:3001/process-data <-- parses the real-time trends and saves them to a file.
+
+http://localhost:3001/predictions <-- loads daily trends and compares to the above
+
+GET http://localhost:3001/logistic-regression <-- train the logistic regression model on data loaded from files
+
+POST http://localhost:3001/logistic-regression/train <-- train the dataset from the payload body
+
+POST http://localhost:3001/logistic-regression/predict <-- predict a major trend from the payload
+
+GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details
+
+## Real Time Trends
+
+We get the results of two data sources and merge then together for the model training data.
+
+These two sources are the arguments to the ```processData(realTimeTrendsData: any, realTimeTrendsPageData: any)``` function.
+
 ## Workflow
 
 ```bash
@@ -28,7 +51,7 @@ docker build -t google-trend-predictor . --progress=plain
 docker run -p 3001:3001 google-trend-predictor
 ```
 
-### Container Shutdown if Ctrl+C doesn't work, in a new terminal:
+### Container Shutdown if Ctrl+C doesn't work, in a new terminal
 
 ```sh
 docker stop <container_name>
@@ -57,27 +80,52 @@ docker build --no-cache -t google-trend-predictor .
 docker run -p 3001:3001 --init google-trend-predictor
 ```
 
-## Description
+## Updating the EC2 instance
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Copy to EC2
 
-http://localhost:3001/process-data <-- parses the real-time trends and saves them to a file.
+```sh
+# From your local Windows PowerShell
+cd C:\Users\timof\repos\node
 
-http://localhost:3001/predictions <-- loads daily trends and compares to the above
+# Create clean copy without node_modules
+mkdir temp-deploy
+robocopy google-trend-predictor temp-deploy /E /XD node_modules .git
 
-GET http://localhost:3001/logistic-regression <-- train the logistic regression model on data loaded from files
+# Copy to EC2
+scp -i "../../gtp.pem" -r temp-deploy ec2-user@ec2-52-65-222-223.ap-southeast-2.compute.amazonaws.com:~/google-trend-predictor
 
-POST http://localhost:3001/logistic-regression/train <-- train the dataset from the payload body
+# Clean up local temp folder
+Remove-Item -Recurse -Force temp-deploy
+```
 
-POST http://localhost:3001/logistic-regression/predict <-- predict a major trend from the payload
+### Rebuild and Restart on EC2
 
-GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details
+```sh
+# SSH into EC2
+ssh -i "../../gtp.pem" ec2-user@ec2-52-65-222-223.ap-southeast-2.compute.amazonaws.com
 
-## Real Time Trends
+# Stop existing container
+docker ps  # get container ID
+docker stop <container-id>
 
-We get the results of two data sources and merge then together for the model training data.
+# Rebuild and run
+cd google-trend-predictor
+docker build -t google-trend-predictor .
+docker run -d -p 3001:3001 --init google-trend-predictor
+```
 
-These two sources are the arguments to the ```processData(realTimeTrendsData: any, realTimeTrendsPageData: any)``` function.
+### Restart everything
+
+```sh
+docker stop $(docker ps -q --filter ancestor=google-trend-predictor)
+docker run -d -p 3001:3001 google-trend-predictor
+
+# Restart nginx
+sudo nginx -t
+sudo systemctl restart nginx
+docker logs $(docker ps -q --filter ancestor=google-trend-predictor) --tail 100
+```
 
 ### Decision Tree Classifier
 
