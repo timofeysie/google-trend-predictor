@@ -19,7 +19,7 @@ POST http://localhost:3001/logistic-regression/train <-- train the dataset from 
 
 POST http://localhost:3001/logistic-regression/predict <-- predict a major trend from the payload
 
-GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details
+GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details (see service for params)
 
 ## Real Time Trends
 
@@ -27,7 +27,7 @@ We get the results of two data sources and merge then together for the model tra
 
 These two sources are the arguments to the ```processData(realTimeTrendsData: any, realTimeTrendsPageData: any)``` function.
 
-## Workflow
+## Nest Workflow
 
 ```bash
 npm install
@@ -40,7 +40,7 @@ npm run test:e2e
 npm run test:cov
 ```
 
-### Docker Workflow
+## Docker Workflow
 
 ```sh
 docker stop $(docker ps -a -q)
@@ -49,11 +49,17 @@ docker image
 docker image prune -a
 docker build -t google-trend-predictor . --progress=plain
 docker run -p 3001:3001 google-trend-predictor
+docker run -p 3001:3001 --init google-trend-predictor # when running locally
+docker run -d -p 3001:3001 --init google-trend-predictor
 ```
+
+Note the -d flag determines whether the container runs in the background or foreground
+The --init flag adds proper process signal handling
 
 ### Container Shutdown if Ctrl+C doesn't work, in a new terminal
 
 ```sh
+docker ps # list all running containers
 docker stop <container_name>
 ```
 
@@ -62,12 +68,14 @@ docker stop <container_name>
 ```sh
 # Remove stopped containers
 docker rm $(docker ps -a -q)
+docker rm $(docker ps -a -q --filter ancestor=google-trend-predictor)
 
 # Remove unused images
 docker image prune -a
 
 # Or for a complete cleanup (including volumes and networks)
 docker system prune -a
+docker system prune -f
 ```
 
 ### Rebuild and Run
@@ -80,9 +88,9 @@ docker build --no-cache -t google-trend-predictor .
 docker run -p 3001:3001 --init google-trend-predictor
 ```
 
-## Updating the EC2 instance
+### Updating the EC2 instance
 
-### Copy to EC2
+#### Copy to EC2
 
 ```sh
 # From your local Windows PowerShell
@@ -93,17 +101,17 @@ mkdir temp-deploy
 robocopy google-trend-predictor temp-deploy /E /XD node_modules .git
 
 # Copy to EC2
-scp -i "../../gtp.pem" -r temp-deploy ec2-user@ec2-52-65-222-223.ap-southeast-2.compute.amazonaws.com:~/google-trend-predictor
+scp -i "../../gtp.pem" -r temp-deploy ec2-user@ec2-54-252-243-219.ap-southeast-2.compute.amazonaws.com:~/google-trend-predictor
 
 # Clean up local temp folder
 Remove-Item -Recurse -Force temp-deploy
 ```
 
-### Rebuild and Restart on EC2
+#### Rebuild and Restart on EC2
 
 ```sh
 # SSH into EC2
-ssh -i "../../gtp.pem" ec2-user@ec2-52-65-222-223.ap-southeast-2.compute.amazonaws.com
+ssh -i "../../gtp.pem" ec2-user@ec2-54-252-243-219.ap-southeast-2.compute.amazonaws.com
 
 # Stop existing container
 docker ps  # get container ID
@@ -115,7 +123,7 @@ docker build -t google-trend-predictor .
 docker run -d -p 3001:3001 --init google-trend-predictor
 ```
 
-### Restart everything
+#### Restart everything
 
 ```sh
 docker stop $(docker ps -q --filter ancestor=google-trend-predictor)

@@ -4,6 +4,8 @@ import * as googleTrends from 'google-trends-api';
 import config from '../../google-trends.config';
 import * as puppeteer from 'puppeteer';
 import { TrendsDataService } from './trends-data.service';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 interface TrendsParams {
   geo?: string;
@@ -16,6 +18,10 @@ interface TrendsParams {
 
 @Injectable()
 export class GoogleTrendsService {
+  private activeRequests = 0;
+  private readonly MAX_CONCURRENT = 2;
+  private execAsync = promisify(exec);
+
   constructor(private readonly trendsDataService: TrendsDataService) {}
 
   async getRealTimeTrends(): Promise<any> {
@@ -27,11 +33,11 @@ export class GoogleTrendsService {
         },
         function (err, results) {
           if (err) {
-            return err;
+            reject(err);
           } else {
             const defaultObj = JSON.parse(Object(results)).default
               .trendingSearchesDays[0].trendingSearches;
-            return defaultObj;
+            resolve(defaultObj);
           }
         },
       );
@@ -186,25 +192,71 @@ export class GoogleTrendsService {
   }
 
   async getSearchTrendsViePuppeteer(params: TrendsParams = {}): Promise<any[]> {
-    console.log('getSearchTrendsViePuppeteer called');
-    const browser = await puppeteer.launch({
-      headless: "new",
-      executablePath: '/usr/bin/google-chrome',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-      ],
-    });
+    if (this.activeRequests >= this.MAX_CONCURRENT) {
+      throw new Error('Too many concurrent requests');
+    }
+    
+    this.activeRequests++;
+    let browser;
     let page;
-
+    
     try {
-      page = await browser.newPage();
-      console.log('\n');
-      console.log('puppeteer page ready');
+      console.log('Launching browser...');
+      browser = await puppeteer.launch({
+        headless: "new",
+        executablePath: '/usr/bin/google-chrome',
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-zygote',
+          '--single-process',
+          '--disable-extensions',
+          '--disable-background-networking',
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-breakpad',
+          '--disable-component-extensions-with-background-pages',
+          '--disable-features=TranslateUI,BlinkGenPropertyTrees',
+          '--disable-ipc-flooding-protection',
+          '--disable-renderer-backgrounding',
+          '--enable-features=NetworkService,NetworkServiceInProcess',
+        ],
+        pipe: true,
+        timeout: 30000,
+      });
 
-      await page.setViewport({ width: 1280, height: 800 });
+      // Wait for browser to be fully initialized
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      if (!browser.isConnected()) {
+        throw new Error('Browser disconnected after launch');
+      }
+
+      console.log('Creating new page...');
+      page = await browser.newPage().catch(e => {
+        console.error('Error creating page:', e);
+        return null;
+      });
+      
+      if (!page) {
+        throw new Error('Failed to create new page');
+      }
+
+      // Wait for page to be ready
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      console.log('Setting viewport...');
+      await page.setViewport({ 
+        width: 1280, 
+        height: 800,
+        deviceScaleFactor: 1,
+      }).catch(e => {
+        console.error('Error setting viewport:', e);
+        throw e;
+      });
+
       await page.setExtraHTTPHeaders({
         'accept-language': 'en-US,en;q=0.9',
       });
@@ -323,19 +375,42 @@ export class GoogleTrendsService {
 
       return relevantTrends;
     } catch (err) {
-      console.error('Error while scraping:', err);
-      if (page) {
-        await page.screenshot({
-          path: 'error-screenshot.png',
-          fullPage: true,
-        });
-      }
+      console.error('Error while scraping:', {
+        error: err.message,
+        stack: err.stack,
+        browserConnected: browser?.isConnected(),
+        url: page?.url() || 'Page not created',
+        params: params,
+        stage: 'Setup phase'
+      });
       return [];
     } finally {
+      this.activeRequests--;
       if (page) {
-        await page.waitForTimeout(2000);
+        try {
+          await page.waitForTimeout(2000);
+          console.log('Closing page...');
+          await page.close().catch(e => console.error('Error closing page:', e));
+        } catch (e) {
+          console.error('Error in page close catch block:', e);
+        }
       }
-      await browser.close();
+      if (browser?.isConnected()) {
+        try {
+          console.log('Closing browser...');
+          await browser.close().catch(e => console.error('Error closing browser:', e));
+        } catch (e) {
+          console.error('Error in browser close catch block:', e);
+        }
+      }
+      if (process.platform === 'linux') {
+        try {
+          console.log('Force cleaning Chrome processes...');
+          await this.execAsync('pkill -f chrome');
+        } catch (e) {
+          // Ignore errors from pkill
+        }
+      }
     }
   }
 }

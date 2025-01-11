@@ -24,6 +24,16 @@ async function bootstrap() {
     next();
   });
 
+  // Add shutdown hooks
+  app.enableShutdownHooks();
+
+  // Handle graceful shutdown
+  process.on('SIGTERM', async () => {
+    console.log('Received SIGTERM signal. Starting graceful shutdown...');
+    await app.close();
+    process.exit(0);
+  });
+
   await app.listen(3001);
 }
 bootstrap();
