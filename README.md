@@ -4,6 +4,11 @@
 
 # Google Trends Predictor
 
+This NestJS application is used to predict if a Google Trends search will become a major trend.
+
+It has used a number of ML models to predict the outcome, as well as a brute force approach by looking at the sparkline data.
+
+It is deployed in a Docker container on an AWS EC2 instance.
 
 ## Description
 
@@ -20,6 +25,8 @@ POST http://localhost:3001/logistic-regression/train <-- train the dataset from 
 POST http://localhost:3001/logistic-regression/predict <-- predict a major trend from the payload
 
 GET http://localhost:3001/parse-realtime-data returns JSON data containing all the trends and their details (see service for params)
+
+With params: https://api.mcayreserve.com/parse-realtime-data?geo=US&hours=24&category=all&type=all&sort=relevance
 
 ## Real Time Trends
 
@@ -40,7 +47,7 @@ npm run test:e2e
 npm run test:cov
 ```
 
-## Docker Workflow
+## Local Docker Workflow
 
 ```sh
 docker stop $(docker ps -a -q)
@@ -88,6 +95,8 @@ docker build --no-cache -t google-trend-predictor .
 docker run -p 3001:3001 --init google-trend-predictor
 ```
 
+## EC2 Docker Workflow
+
 ### Updating the EC2 instance
 
 #### Copy to EC2
@@ -127,12 +136,24 @@ docker run -d -p 3001:3001 --init google-trend-predictor
 
 ```sh
 docker stop $(docker ps -q --filter ancestor=google-trend-predictor)
-docker run -d -p 3001:3001 google-trend-predictor
+# Run Docker with CloudWatch logging
+docker run -d --rm -p 3001:3001 --init \
+  --log-driver=awslogs \
+  --log-opt awslogs-region=ap-southeast-2 \
+  --log-opt awslogs-group=/aws/ec2/google-trend-predictor \
+  --log-opt awslogs-create-group=true \
+  google-trend-predictor
 
 # Restart nginx
 sudo nginx -t
 sudo systemctl restart nginx
 docker logs $(docker ps -q --filter ancestor=google-trend-predictor) --tail 100
+```
+
+#### Edit the nginx config
+
+```sh
+sudo nano /etc/nginx/nginx.conf
 ```
 
 ### Decision Tree Classifier
